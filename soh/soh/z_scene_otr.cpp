@@ -64,25 +64,90 @@ bool func_80098508(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 // Scene Command 0x01: Actor List
 bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     Ship::SetActorList* cmdActor = (Ship::SetActorList*)cmd;
-
-    globalCtx->numSetupActors = cmdActor->entries.size();
+    
+    // box in jabu mouth
+    if (globalCtx->sceneNum == 2 && globalCtx->roomCtx.curRoom.num == 0) {
+        globalCtx->numSetupActors = cmdActor->entries.size() + 1;
+    }
+    // torches in dodongo firecircle2
+    else if (globalCtx->sceneNum == 1 && globalCtx->roomCtx.curRoom.num == 12) {
+        globalCtx->numSetupActors = cmdActor->entries.size()+2;
+    } else {
+        globalCtx->numSetupActors = cmdActor->entries.size();
+    }
 
     if (cmdActor->cachedGameData != nullptr)
         globalCtx->setupActorList = (ActorEntry*)cmdActor->cachedGameData;
     else
     {
-        ActorEntry* entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
+        ActorEntry* entries;
+        // box in jabu mouth
+        if (globalCtx->sceneNum == 2 && globalCtx->roomCtx.curRoom.num == 0) {
+            entries = (ActorEntry*)malloc((cmdActor->entries.size() + 1) * sizeof(ActorEntry));
+        }
+        // torches in dodongo firecircle2
+        else if (globalCtx->sceneNum == 1 && globalCtx->roomCtx.curRoom.num == 12) {
+            entries = (ActorEntry*)malloc((cmdActor->entries.size() + 2) * sizeof(ActorEntry));
+        } else {
+            entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
+        }
         
-        for (int i = 0; i < cmdActor->entries.size(); i++)
+        int i;
+        
+        for (i = 0; i < cmdActor->entries.size(); i++)
         {
-            entries[i].id = cmdActor->entries[i].actorNum;
-            entries[i].pos.x = cmdActor->entries[i].posX;
-            entries[i].pos.y = cmdActor->entries[i].posY;
-            entries[i].pos.z = cmdActor->entries[i].posZ;
-            entries[i].rot.x = cmdActor->entries[i].rotX;
-            entries[i].rot.y = cmdActor->entries[i].rotY;
-            entries[i].rot.z = cmdActor->entries[i].rotZ;
-            entries[i].params = cmdActor->entries[i].initVar;
+            // torch in dodongo firecircle1
+            if (globalCtx->sceneNum == 1 && globalCtx->roomCtx.curRoom.num == 10 &&
+                cmdActor->entries[i].actorNum == ACTOR_EN_KUSA) {
+                entries[i].id = ACTOR_OBJ_SYOKUDAI;
+                entries[i].pos.x = cmdActor->entries[i].posX;
+                entries[i].pos.y = cmdActor->entries[i].posY;
+                entries[i].pos.z = cmdActor->entries[i].posZ;
+                entries[i].rot.x = cmdActor->entries[i].rotX;
+                entries[i].rot.y = cmdActor->entries[i].rotY;
+                entries[i].rot.z = cmdActor->entries[i].rotZ;
+                entries[i].params = 0x1038;
+            } else {
+                entries[i].id = cmdActor->entries[i].actorNum;
+                entries[i].pos.x = cmdActor->entries[i].posX;
+                entries[i].pos.y = cmdActor->entries[i].posY;
+                entries[i].pos.z = cmdActor->entries[i].posZ;
+                entries[i].rot.x = cmdActor->entries[i].rotX;
+                entries[i].rot.y = cmdActor->entries[i].rotY;
+                entries[i].rot.z = cmdActor->entries[i].rotZ;
+                entries[i].params = cmdActor->entries[i].initVar;
+            }
+        }
+        
+        // box in jabu mouth
+        if (globalCtx->sceneNum == 2 && globalCtx->roomCtx.curRoom.num == 0) {
+            entries[i].id = ACTOR_OBJ_KIBAKO;
+            entries[i].pos.x = -4;
+            entries[i].pos.y = -300;
+            entries[i].pos.z = -729;
+            entries[i].rot.x = 0;
+            entries[i].rot.y = 4369;
+            entries[i].rot.z = 0;
+            entries[i].params = 0xFFFF;
+        }
+        else if (globalCtx->sceneNum == 1 && globalCtx->roomCtx.curRoom.num == 12) {
+            entries[i].id = ACTOR_OBJ_SYOKUDAI;
+            entries[i].pos.x = 2705;
+            entries[i].pos.y = 411;
+            entries[i].pos.z = -750;
+            entries[i].rot.x = 0;
+            entries[i].rot.y = 0;
+            entries[i].rot.z = 0;
+            entries[i].params = 0x1039;
+            i++;
+            entries[i].id = ACTOR_OBJ_SYOKUDAI;
+            entries[i].pos.x = 3333;
+            entries[i].pos.y = 475;
+            entries[i].pos.z = -1090;
+            entries[i].rot.x = 0;
+            entries[i].rot.y = 0;
+            entries[i].rot.z = 0;
+            entries[i].params = 0x103A;
         }
 
         cmdActor->cachedGameData = entries;
