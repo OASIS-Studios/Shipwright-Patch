@@ -482,13 +482,13 @@ s16 func_80AAAF04(GlobalContext* globalCtx, Actor* thisx) {
 
 u8 EnMd_ShouldSpawn(EnMd* this, GlobalContext* globalCtx) {
     if (globalCtx->sceneNum == SCENE_SPOT04) {
-        if (!CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+        if (!(gSaveContext.eventChkInf[1] & 0x1000)) {
             return 1;
         }
     }
 
     if (globalCtx->sceneNum == SCENE_KOKIRI_HOME4) {
-        if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+        if ((gSaveContext.eventChkInf[1] & 0x1000)) {
             if (!LINK_IS_ADULT) {
                 return 1;
             }
