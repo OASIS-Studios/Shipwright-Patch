@@ -708,7 +708,15 @@ bool func_800990F0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     globalCtx->setupExitList = (int16_t*)malloc(cmdExit->exits.size() * sizeof(int16_t));
 
     for (int i = 0; i < cmdExit->exits.size(); i++)
-        globalCtx->setupExitList[i] = cmdExit->exits[i];
+        if (globalCtx->sceneNum == SCENE_SPOT15 &&
+            cmdExit->exits[i] >= 0x7A && cmdExit->exits[i] <= 0x7D) {
+            globalCtx->setupExitList[i] = 0x400;
+        } else if (globalCtx->sceneNum == SCENE_NAKANIWA &&
+                    cmdExit->exits[i] >= 0x296 && cmdExit->exits[i] <= 0x299) {
+            globalCtx->setupExitList[i] = 0x23D;
+        } else {
+            globalCtx->setupExitList[i] = cmdExit->exits[i];
+        }
 
     return false;
 }
