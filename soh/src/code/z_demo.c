@@ -2079,8 +2079,7 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
             Flags_SetEventChkInf(0xAC);
             gSaveContext.entranceIndex = 0x0123;
             gSaveContext.cutsceneIndex = 0xFFF0;
-        } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (gSaveContext.eventChkInf[4] & 0x0100) &&
-                   (gSaveContext.eventChkInf[4] & 0x0200) && (gSaveContext.eventChkInf[4] & 0x0400) &&
+        } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT &&
                    !Flags_GetEventChkInf(0xAA)) {
             Flags_SetEventChkInf(0xAA);
             gSaveContext.cutsceneIndex = 0xFFF0;

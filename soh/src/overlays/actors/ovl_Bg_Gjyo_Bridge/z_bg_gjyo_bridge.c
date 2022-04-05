@@ -72,6 +72,8 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) 
     Player* player = GET_PLAYER(globalCtx);
 
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+        CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) &&
+        CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) && (player->actor.world.pos.x > -70.0f) &&
         (player->actor.world.pos.x < 300.0f) && (player->actor.world.pos.y > 1340.0f) &&
         (player->actor.world.pos.z > 1340.0f) && (player->actor.world.pos.z < 1662.0f) &&

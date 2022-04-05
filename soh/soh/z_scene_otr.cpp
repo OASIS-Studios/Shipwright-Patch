@@ -67,22 +67,98 @@ bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
 
     globalCtx->numSetupActors = cmdActor->entries.size();
 
+    if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
+        globalCtx->numSetupActors = cmdActor->entries.size() + 1;
+    } else if (globalCtx->sceneNum == SCENE_JYASINZOU && globalCtx->roomCtx.curRoom.num == 22) {
+        globalCtx->numSetupActors = 1;
+    } else if (globalCtx->sceneNum == SCENE_SPOT13 && globalCtx->roomCtx.curRoom.num == 1) {
+        globalCtx->numSetupActors = cmdActor->entries.size() + 2;
+    } else {
+        globalCtx->numSetupActors = cmdActor->entries.size();
+    }
+
     if (cmdActor->cachedGameData != nullptr)
         globalCtx->setupActorList = (ActorEntry*)cmdActor->cachedGameData;
     else
     {
-        ActorEntry* entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
-        
-        for (int i = 0; i < cmdActor->entries.size(); i++)
+        ActorEntry* entries;
+
+        if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
+            entries = (ActorEntry*)malloc((cmdActor->entries.size() + 1) * sizeof(ActorEntry));
+        } else if (globalCtx->sceneNum == SCENE_JYASINZOU && globalCtx->roomCtx.curRoom.num == 22) {
+            entries = (ActorEntry*)malloc(sizeof(ActorEntry));
+        } else if (globalCtx->sceneNum == SCENE_SPOT13 && globalCtx->roomCtx.curRoom.num == 1) {
+            entries = (ActorEntry*)malloc((cmdActor->entries.size() + 2) * sizeof(ActorEntry));
+        } else {
+            entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
+        }
+
+        int i;
+
+        for (i = 0; i < cmdActor->entries.size(); i++)
         {
-            entries[i].id = cmdActor->entries[i].actorNum;
-            entries[i].pos.x = cmdActor->entries[i].posX;
-            entries[i].pos.y = cmdActor->entries[i].posY;
-            entries[i].pos.z = cmdActor->entries[i].posZ;
-            entries[i].rot.x = cmdActor->entries[i].rotX;
-            entries[i].rot.y = cmdActor->entries[i].rotY;
-            entries[i].rot.z = cmdActor->entries[i].rotZ;
-            entries[i].params = cmdActor->entries[i].initVar;
+            // bombchu for bomb bridge in shadow temple
+            if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 13 &&
+                 cmdActor->entries[i].actorNum == ACTOR_EN_BOX && cmdActor->entries[i].initVar == 0x588A) {
+                entries[i].id = cmdActor->entries[i].actorNum;
+                entries[i].pos.x = cmdActor->entries[i].posX;
+                entries[i].pos.y = cmdActor->entries[i].posY;
+                entries[i].pos.z = cmdActor->entries[i].posZ;
+                entries[i].rot.x = cmdActor->entries[i].rotX;
+                entries[i].rot.y = cmdActor->entries[i].rotY;
+                entries[i].rot.z = cmdActor->entries[i].rotZ;
+                entries[i].params = 0x5D4A;
+            } else if (globalCtx->sceneNum == SCENE_JYASINZOU && globalCtx->roomCtx.curRoom.num == 22) {
+                continue;
+            } else {
+                entries[i].id = cmdActor->entries[i].actorNum;
+                entries[i].pos.x = cmdActor->entries[i].posX;
+                entries[i].pos.y = cmdActor->entries[i].posY;
+                entries[i].pos.z = cmdActor->entries[i].posZ;
+                entries[i].rot.x = cmdActor->entries[i].rotX;
+                entries[i].rot.y = cmdActor->entries[i].rotY;
+                entries[i].rot.z = cmdActor->entries[i].rotZ;
+                entries[i].params = cmdActor->entries[i].initVar;
+            }
+        }
+
+        // bomb bridge in shadow temple
+        if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
+            entries[i].id = ACTOR_BG_HAKA_ZOU;
+            entries[i].pos.x = -2258;
+            entries[i].pos.y = -1800;
+            entries[i].pos.z = -779;
+            entries[i].rot.x = -0x4000;
+            entries[i].rot.y = 0;
+            entries[i].rot.z = 0;
+            entries[i].params = 0x1000;
+        } else if (globalCtx->sceneNum == SCENE_JYASINZOU && globalCtx->roomCtx.curRoom.num == 22) {
+            entries[0].id = ACTOR_EN_BOX;
+            entries[0].pos.x = 685;
+            entries[0].pos.y = 1633;
+            entries[0].pos.z = -1601;
+            entries[0].rot.x = 0;
+            entries[0].rot.y = -32768;
+            entries[0].rot.z = 0;
+            entries[0].params = 0x27EA;
+        } else if (globalCtx->sceneNum == SCENE_SPOT13 && globalCtx->roomCtx.curRoom.num == 1) {
+            entries[i].id = ACTOR_OBJ_KIBAKO2;
+            entries[i].pos.x = 3532;
+            entries[i].pos.y = -410;
+            entries[i].pos.z = 2840;
+            entries[i].rot.x = 0;
+            entries[i].rot.y = 0xB777;
+            entries[i].rot.z = 0;
+            entries[i].params = 0xFFFF;
+            i++;
+            entries[i].id = ACTOR_OBJ_KIBAKO2;
+            entries[i].pos.x = 3300;
+            entries[i].pos.y = -380;
+            entries[i].pos.z = 2650;
+            entries[i].rot.x = 0;
+            entries[i].rot.y = 0xB777;
+            entries[i].rot.z = 0;
+            entries[i].params = 0xFFFF;
         }
 
         cmdActor->cachedGameData = entries;
@@ -555,16 +631,30 @@ bool func_80098C68(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
 
     for (int i = 0; i < cmdActor->entries.size(); i++)
     {
-        globalCtx->transiActorCtx.list[i].sides[0].room = cmdActor->entries[i].frontObjectRoom;
-        globalCtx->transiActorCtx.list[i].sides[0].effects = cmdActor->entries[i].frontTransitionReaction;
-        globalCtx->transiActorCtx.list[i].sides[1].room = cmdActor->entries[i].backObjectRoom;
-        globalCtx->transiActorCtx.list[i].sides[1].effects = cmdActor->entries[i].backTransitionReaction;
-        globalCtx->transiActorCtx.list[i].id = cmdActor->entries[i].actorNum;
-        globalCtx->transiActorCtx.list[i].pos.x = cmdActor->entries[i].posX;
-        globalCtx->transiActorCtx.list[i].pos.y = cmdActor->entries[i].posY;
-        globalCtx->transiActorCtx.list[i].pos.z = cmdActor->entries[i].posZ;
-        globalCtx->transiActorCtx.list[i].rotY = cmdActor->entries[i].rotY;
-        globalCtx->transiActorCtx.list[i].params = cmdActor->entries[i].initVar;
+        if (globalCtx->sceneNum == SCENE_MIZUSIN && cmdActor->entries[i].frontObjectRoom == 1 &&
+            cmdActor->entries[i].initVar == 0x86 && cmdActor->entries[i].backObjectRoom == 0) {
+            globalCtx->transiActorCtx.list[i].sides[0].room = cmdActor->entries[i].frontObjectRoom;
+            globalCtx->transiActorCtx.list[i].sides[0].effects = cmdActor->entries[i].frontTransitionReaction;
+            globalCtx->transiActorCtx.list[i].sides[1].room = cmdActor->entries[i].backObjectRoom;
+            globalCtx->transiActorCtx.list[i].sides[1].effects = cmdActor->entries[i].backTransitionReaction;
+            globalCtx->transiActorCtx.list[i].id = cmdActor->entries[i].actorNum;
+            globalCtx->transiActorCtx.list[i].pos.x = cmdActor->entries[i].posX;
+            globalCtx->transiActorCtx.list[i].pos.y = cmdActor->entries[i].posY;
+            globalCtx->transiActorCtx.list[i].pos.z = cmdActor->entries[i].posZ;
+            globalCtx->transiActorCtx.list[i].rotY = cmdActor->entries[i].rotY;
+            globalCtx->transiActorCtx.list[i].params = 0x06;
+        } else {
+            globalCtx->transiActorCtx.list[i].sides[0].room = cmdActor->entries[i].frontObjectRoom;
+            globalCtx->transiActorCtx.list[i].sides[0].effects = cmdActor->entries[i].frontTransitionReaction;
+            globalCtx->transiActorCtx.list[i].sides[1].room = cmdActor->entries[i].backObjectRoom;
+            globalCtx->transiActorCtx.list[i].sides[1].effects = cmdActor->entries[i].backTransitionReaction;
+            globalCtx->transiActorCtx.list[i].id = cmdActor->entries[i].actorNum;
+            globalCtx->transiActorCtx.list[i].pos.x = cmdActor->entries[i].posX;
+            globalCtx->transiActorCtx.list[i].pos.y = cmdActor->entries[i].posY;
+            globalCtx->transiActorCtx.list[i].pos.z = cmdActor->entries[i].posZ;
+            globalCtx->transiActorCtx.list[i].rotY = cmdActor->entries[i].rotY;
+            globalCtx->transiActorCtx.list[i].params = cmdActor->entries[i].initVar;
+        }
     }
 
     return false;
