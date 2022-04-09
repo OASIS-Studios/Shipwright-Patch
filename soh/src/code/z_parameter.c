@@ -15,6 +15,10 @@
 #define DO_ACTION_TEX_HEIGHT 16
 #define DO_ACTION_TEX_SIZE ((DO_ACTION_TEX_WIDTH * DO_ACTION_TEX_HEIGHT) / 2) // (sizeof(gCheckDoActionENGTex))
 
+static char cUpTex[] = {
+#include "cuptex.i8.inc.h"
+};
+
 typedef struct {
     /* 0x00 */ u8 scene;
     /* 0x01 */ u8 flags1;
@@ -2944,7 +2948,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             };
 
             if (temp==4) {
-                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, cButtonIcons[(temp + 1)], 32, 32,
+                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, cUpTex, 32, 32,
                                             OTRGetRectDimensionFromRightEdge(C_UP_BUTTON_X), C_UP_BUTTON_Y, R_ITEM_BTN_WIDTH(2),
                                             R_ITEM_BTN_WIDTH(2), R_ITEM_BTN_DD(2) << 1, R_ITEM_BTN_DD(2) << 1);
             } else {
