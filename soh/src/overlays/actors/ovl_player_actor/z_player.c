@@ -1848,7 +1848,8 @@ s32 func_80833C98(s32 item1, s32 actionParam) {
     }
 }
 
-s32 func_80833CDC(GlobalContext* globalCtx, s32 index) {
+s32 func_80833CDC(GlobalContext* globalCtx, s32 index, bool validate) {
+    u8 mode = validate ? MENU_RETURN_MODE_VALIDATE : MENU_RETURN_MODE_USE;
     if (index >= 9) {
         return ITEM_NONE;
     }
@@ -1859,28 +1860,28 @@ s32 func_80833CDC(GlobalContext* globalCtx, s32 index) {
         return B_BTN_ITEM;
     }
     else if (index == 1 && GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
-        return GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_USE);
+        return GetCMenuItem(globalCtx, 1, mode);
     }
     else if (index == 2 && GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
-        return GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_USE);
+        return GetCMenuItem(globalCtx, 2, mode);
     }
     else if (index == 3 && GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
-        return GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_USE);
+        return GetCMenuItem(globalCtx, 3, mode);
     }
     else if (index == 4 && GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
-        return GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_USE);
+        return GetCMenuItem(globalCtx, 4, mode);
     }
     else if (index == 5 && GetCMenuItem(globalCtx, 5, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
-        return GetCMenuItem(globalCtx, 5, MENU_RETURN_MODE_USE);
+        return GetCMenuItem(globalCtx, 5, mode);
     }
     else if (index == 6 && GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
-        return GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_USE);
+        return GetCMenuItem(globalCtx, 6, mode);
     }
     else if (index == 7 && GetCMenuItem(globalCtx, 7, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
-        return GetCMenuItem(globalCtx, 7, MENU_RETURN_MODE_USE);
+        return GetCMenuItem(globalCtx, 7, mode);
     }
     else if (index == 8 && GetCMenuItem(globalCtx, 8, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
-        return GetCMenuItem(globalCtx, 8, MENU_RETURN_MODE_USE);
+        return GetCMenuItem(globalCtx, 8, mode);
     }
 }
 
@@ -1917,7 +1918,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
             }
         }
 
-        item = func_80833CDC(globalCtx, i);
+        item = func_80833CDC(globalCtx, i, false);
         if (item >= ITEM_NONE_FE) {
             for (i = 0; i < ARRAY_COUNT(D_80854388); i++) {
                 if (CHECK_BTN_ALL(sControlInput->cur.button, D_80854388[i])) {
@@ -1925,7 +1926,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
                 }
             }
 
-            item = func_80833CDC(globalCtx, i);
+            item = func_80833CDC(globalCtx, i, true);
             if ((item < ITEM_NONE_FE) && (Player_ItemToActionParam(item) == this->heldItemActionParam)) {
                 D_80853618 = true;
             }
