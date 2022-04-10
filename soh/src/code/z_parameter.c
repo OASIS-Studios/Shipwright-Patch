@@ -217,7 +217,10 @@ void func_80082644(GlobalContext* globalCtx, s16 alpha) {
         }
     }
 
-    if (gSaveContext.buttonStatus[1] == BTN_DISABLED) {
+    if ((gSaveContext.equips.cMenu < MENU_PAGE_D_INDEX &&
+        GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_VALIDATE) == ITEM_NONE) ||
+        (gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX &&
+        GetCMenuItem(globalCtx, 5, MENU_RETURN_MODE_VALIDATE) == ITEM_NONE)) {
         if (interfaceCtx->cLeftAlpha != 70) {
             interfaceCtx->cLeftAlpha = 70;
         }
@@ -227,7 +230,10 @@ void func_80082644(GlobalContext* globalCtx, s16 alpha) {
         }
     }
 
-    if (gSaveContext.buttonStatus[2] == BTN_DISABLED) {
+   if ((gSaveContext.equips.cMenu < MENU_PAGE_D_INDEX &&
+        GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_VALIDATE) == ITEM_NONE) ||
+        (gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX &&
+        GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_VALIDATE) == ITEM_NONE)) {
         if (interfaceCtx->cDownAlpha != 70) {
             interfaceCtx->cDownAlpha = 70;
         }
@@ -237,7 +243,10 @@ void func_80082644(GlobalContext* globalCtx, s16 alpha) {
         }
     }
 
-    if (gSaveContext.buttonStatus[3] == BTN_DISABLED) {
+    if ((gSaveContext.equips.cMenu < MENU_PAGE_D_INDEX &&
+        GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_VALIDATE) == ITEM_NONE) ||
+        (gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX &&
+        GetCMenuItem(globalCtx, 7, MENU_RETURN_MODE_VALIDATE) == ITEM_NONE)) {
         if (interfaceCtx->cRightAlpha != 70) {
             interfaceCtx->cRightAlpha = 70;
         }
@@ -247,7 +256,10 @@ void func_80082644(GlobalContext* globalCtx, s16 alpha) {
         }
     }
 
-    if (gSaveContext.buttonStatus[4] == BTN_DISABLED) {
+    if ((gSaveContext.equips.cMenu < MENU_PAGE_D_INDEX &&
+        GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_VALIDATE) == ITEM_NONE) ||
+        (gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX &&
+        GetCMenuItem(globalCtx, 8, MENU_RETURN_MODE_VALIDATE) == ITEM_NONE)) {
         if (interfaceCtx->cUpAlpha != 70) {
             interfaceCtx->cUpAlpha = 70;
         }
@@ -699,8 +711,7 @@ void func_80083108(GlobalContext* globalCtx) {
                 gSaveContext.unk_13E7 = 1;
 
                 if (gSaveContext.buttonStatus[0] == BTN_DISABLED) {
-                    gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-                        gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_ENABLED;
+                    gSaveContext.buttonStatus[0] = BTN_ENABLED;
                 }
 
                 if ((gSaveContext.equips.buttonItems[0] != ITEM_SLINGSHOT) &&
@@ -729,8 +740,6 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
                     }
 
-                    gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] = gSaveContext.buttonStatus[3] =
-                        gSaveContext.buttonStatus[4] = BTN_DISABLED;
                     Interface_ChangeAlpha(6);
                 }
 
@@ -774,16 +783,14 @@ void func_80083108(GlobalContext* globalCtx) {
                     Interface_LoadItemIcon1(globalCtx, 0);
                 }
 
-                gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-                    gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_DISABLED;
+                gSaveContext.buttonStatus[0] = BTN_DISABLED;
                 Interface_ChangeAlpha(50);
             } else {
                 if (gSaveContext.buttonStatus[0] == BTN_ENABLED) {
                     gSaveContext.unk_13EA = 0;
                 }
 
-                gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-                    gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_DISABLED;
+                gSaveContext.buttonStatus[0] = BTN_DISABLED;
                 Interface_ChangeAlpha(50);
             }
         } else if (msgCtx->msgMode == MSGMODE_NONE) {
@@ -794,6 +801,8 @@ void func_80083108(GlobalContext* globalCtx) {
 
                 gSaveContext.buttonStatus[0] = BTN_DISABLED;
 
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 for (i = 1; i < 5; i++) {
                     if (func_8008F2F8(globalCtx) == 2) {
                         if ((gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
@@ -818,6 +827,7 @@ void func_80083108(GlobalContext* globalCtx) {
                         gSaveContext.buttonStatus[i] = BTN_DISABLED;
                     }
                 }
+                */
 
                 if (sp28) {
                     gSaveContext.unk_13EA = 0;
@@ -827,10 +837,13 @@ void func_80083108(GlobalContext* globalCtx) {
             } else if ((player->stateFlags1 & 0x00200000) || (player->stateFlags2 & 0x00040000)) {
                 if (gSaveContext.buttonStatus[0] != BTN_DISABLED) {
                     gSaveContext.buttonStatus[0] = BTN_DISABLED;
+                    // C-Menu Item Restrictions handled in GetCMenuItem
+                    /*
                     gSaveContext.buttonStatus[1] = BTN_DISABLED;
                     gSaveContext.buttonStatus[2] = BTN_DISABLED;
                     gSaveContext.buttonStatus[3] = BTN_DISABLED;
                     gSaveContext.buttonStatus[4] = BTN_DISABLED;
+                    */
                     gSaveContext.unk_13EA = 0;
                     Interface_ChangeAlpha(50);
                 }
@@ -868,6 +881,8 @@ void func_80083108(GlobalContext* globalCtx) {
                     sp28 = 0;
                 }
 
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 for (i = 1; i < 5; i++) {
                     if ((gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_FAIRY) &&
                         (gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_TIME)) {
@@ -884,6 +899,7 @@ void func_80083108(GlobalContext* globalCtx) {
                         gSaveContext.buttonStatus[i] = BTN_ENABLED;
                     }
                 }
+                */
 
                 if (sp28) {
                     gSaveContext.unk_13EA = 0;
@@ -936,6 +952,8 @@ void func_80083108(GlobalContext* globalCtx) {
                     }
                 }
 
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 if (interfaceCtx->restrictions.bottles != 0) {
                     for (i = 1; i < 5; i++) {
                         if ((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
@@ -959,7 +977,10 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
                     }
                 }
+                */
 
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 if (interfaceCtx->restrictions.tradeItems != 0) {
                     for (i = 1; i < 5; i++) {
                         if ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
@@ -983,7 +1004,10 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
                     }
                 }
-
+                */
+               
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 if (interfaceCtx->restrictions.hookshot != 0) {
                     for (i = 1; i < 5; i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_HOOKSHOT) ||
@@ -1007,7 +1031,10 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
                     }
                 }
-
+                */
+               
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 if (interfaceCtx->restrictions.ocarina != 0) {
                     for (i = 1; i < 5; i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_OCARINA_FAIRY) ||
@@ -1031,7 +1058,10 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
                     }
                 }
+                */
 
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 if (interfaceCtx->restrictions.farores != 0) {
                     for (i = 1; i < 5; i++) {
                         if (gSaveContext.equips.buttonItems[i] == ITEM_FARORES_WIND) {
@@ -1054,7 +1084,10 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
                     }
                 }
+                */
 
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 if (interfaceCtx->restrictions.dinsNayrus != 0) {
                     for (i = 1; i < 5; i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_DINS_FIRE) ||
@@ -1078,7 +1111,10 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
                     }
                 }
+                */
 
+                // C-Menu Item Restrictions handled in GetCMenuItem
+                /*
                 if (interfaceCtx->restrictions.all != 0) {
                     for (i = 1; i < 5; i++) {
                         if ((gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_FAIRY) &&
@@ -1124,6 +1160,7 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
                     }
                 }
+                */
             }
         }
     }
@@ -1335,15 +1372,25 @@ void func_800849EC(GlobalContext* globalCtx) {
     }
 
     Interface_LoadItemIcon1(globalCtx, 0);
+    Interface_LoadItemIcon1(globalCtx, 1);
+    Interface_LoadItemIcon1(globalCtx, 2);
+    Interface_LoadItemIcon1(globalCtx, 3);
+    Interface_LoadItemIcon1(globalCtx, 4);
 }
 
 void Interface_LoadItemIcon1(GlobalContext* globalCtx, u16 button) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
 
     osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-    DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->iconItemSegment + button * 0x1000,
-                        (uintptr_t)_icon_item_staticSegmentRomStart + (gSaveContext.equips.buttonItems[button] * 0x1000),
+    if (button == 0) {
+        DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->iconItemSegment + button * 0x1000,
+                        (uintptr_t)_icon_item_staticSegmentRomStart + (gSaveContext.equips.buttonItems[0] * 0x1000),
                         0x1000, 0, &interfaceCtx->loadQueue, NULL, "../z_parameter.c", 1171);
+    } else {
+        DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->iconItemSegment + button * 0x1000,
+                        (u32)_icon_item_staticSegmentRomStart + (GetCMenuItem(globalCtx, button, MENU_RETURN_MODE_ICON) * 0x1000),
+                        0x1000, 0, &interfaceCtx->loadQueue, NULL, "../z_parameter.c", 1171);
+    }
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 }
 
@@ -1351,9 +1398,15 @@ void Interface_LoadItemIcon2(GlobalContext* globalCtx, u16 button) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
 
     osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-    DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_180, interfaceCtx->iconItemSegment + button * 0x1000,
-                        (uintptr_t)_icon_item_staticSegmentRomStart + (gSaveContext.equips.buttonItems[button] * 0x1000),
+    if (button == 0) {
+        DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->iconItemSegment + button * 0x1000,
+                        (uintptr_t)_icon_item_staticSegmentRomStart + (gSaveContext.equips.buttonItems[0] * 0x1000),
+                        0x1000, 0, &interfaceCtx->loadQueue, NULL, "../z_parameter.c", 1171);
+    } else {
+        DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_180, interfaceCtx->iconItemSegment + button * 0x1000,
+                        (uintptr_t)_icon_item_staticSegmentRomStart + (GetCMenuItem(globalCtx, button, MENU_RETURN_MODE_ICON) * 0x1000),
                         0x1000, 0, &interfaceCtx->loadQueue, NULL, "../z_parameter.c", 1193);
+    }
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 }
 
@@ -1474,12 +1527,21 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
+        Interface_LoadItemIcon1(globalCtx, 1);
+        Interface_LoadItemIcon1(globalCtx, 3);
+        Interface_LoadItemIcon1(globalCtx, 4);
         return ITEM_NONE;
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]);
+        Interface_LoadItemIcon1(globalCtx, 1);
+        Interface_LoadItemIcon1(globalCtx, 3);
+        Interface_LoadItemIcon1(globalCtx, 4);
         return ITEM_NONE;
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
+        Interface_LoadItemIcon1(globalCtx, 1);
+        Interface_LoadItemIcon1(globalCtx, 3);
+        Interface_LoadItemIcon1(globalCtx, 4);
         return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
@@ -1497,6 +1559,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             Inventory_ChangeUpgrade(UPG_QUIVER, 1);
             INV_CONTENT(ITEM_BOW) = ITEM_BOW;
             AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 1);
+            Interface_LoadItemIcon1(globalCtx, 4);
             return ITEM_NONE;
         } else {
             AMMO(ITEM_BOW)++;
@@ -1504,27 +1567,33 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
             }
         }
+        Interface_LoadItemIcon1(globalCtx, 4);
     } else if (item == ITEM_QUIVER_40) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 2);
         AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 2);
+        Interface_LoadItemIcon1(globalCtx, 4);
         return ITEM_NONE;
     } else if (item == ITEM_QUIVER_50) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 3);
         AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 3);
+        Interface_LoadItemIcon1(globalCtx, 4);
         return ITEM_NONE;
     } else if (item == ITEM_BULLET_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 2);
         AMMO(ITEM_SLINGSHOT) = CAPACITY(UPG_BULLET_BAG, 2);
+        Interface_LoadItemIcon1(globalCtx, 3);
         return ITEM_NONE;
     } else if (item == ITEM_BULLET_BAG_50) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 3);
         AMMO(ITEM_SLINGSHOT) = CAPACITY(UPG_BULLET_BAG, 3);
+        Interface_LoadItemIcon1(globalCtx, 3);
         return ITEM_NONE;
     } else if (item == ITEM_BOMB_BAG_20) {
         if (CUR_UPG_VALUE(UPG_BOMB_BAG) == 0) {
             Inventory_ChangeUpgrade(UPG_BOMB_BAG, 1);
             INV_CONTENT(ITEM_BOMB) = ITEM_BOMB;
             AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 1);
+            Interface_LoadItemIcon1(globalCtx, 2);
             return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMB)++;
@@ -1532,13 +1601,16 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
             }
         }
+        Interface_LoadItemIcon1(globalCtx, 2);
     } else if (item == ITEM_BOMB_BAG_30) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 2);
         AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 2);
+        Interface_LoadItemIcon1(globalCtx, 2);
         return ITEM_NONE;
     } else if (item == ITEM_BOMB_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 3);
         AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 3);
+        Interface_LoadItemIcon1(globalCtx, 2);
         return ITEM_NONE;
     } else if (item == ITEM_BRACELET) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
@@ -1567,12 +1639,14 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
         Inventory_ChangeUpgrade(UPG_STICKS, 2);
         AMMO(ITEM_STICK) = CAPACITY(UPG_STICKS, 2);
+        Interface_LoadItemIcon1(globalCtx, 4);
         return ITEM_NONE;
     } else if (item == ITEM_STICK_UPGRADE_30) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_STICK) = ITEM_STICK;
         }
         Inventory_ChangeUpgrade(UPG_STICKS, 3);
+        Interface_LoadItemIcon1(globalCtx, 4);
         AMMO(ITEM_STICK) = CAPACITY(UPG_STICKS, 3);
         return ITEM_NONE;
     } else if (item == ITEM_NUT_UPGRADE_30) {
@@ -1580,6 +1654,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         }
         Inventory_ChangeUpgrade(UPG_NUTS, 2);
+        Interface_LoadItemIcon1(globalCtx, 2);
         AMMO(ITEM_NUT) = CAPACITY(UPG_NUTS, 2);
         return ITEM_NONE;
     } else if (item == ITEM_NUT_UPGRADE_40) {
@@ -1587,16 +1662,12 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         }
         Inventory_ChangeUpgrade(UPG_NUTS, 3);
+        Interface_LoadItemIcon1(globalCtx, 2);
         AMMO(ITEM_NUT) = CAPACITY(UPG_NUTS, 3);
         return ITEM_NONE;
     } else if (item == ITEM_LONGSHOT) {
         INV_CONTENT(item) = item;
-        for (i = 1; i < 5; i++) {
-            if (gSaveContext.equips.buttonItems[i] == ITEM_HOOKSHOT) {
-                gSaveContext.equips.buttonItems[i] = ITEM_LONGSHOT;
-                Interface_LoadItemIcon1(globalCtx, i);
-            }
-        }
+        Interface_LoadItemIcon1(globalCtx, 3);
         return ITEM_NONE;
     } else if (item == ITEM_STICK) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -1608,6 +1679,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
             }
         }
+        Interface_LoadItemIcon1(globalCtx, 4);
     } else if ((item == ITEM_STICKS_5) || (item == ITEM_STICKS_10)) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_STICKS, 1);
@@ -1619,6 +1691,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             }
         }
         item = ITEM_STICK;
+        Interface_LoadItemIcon1(globalCtx, 3);
     } else if (item == ITEM_NUT) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
@@ -1629,6 +1702,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
             }
         }
+        Interface_LoadItemIcon1(globalCtx, 2);
     } else if ((item == ITEM_NUTS_5) || (item == ITEM_NUTS_10)) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
@@ -1643,6 +1717,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             }
         }
         item = ITEM_NUT;
+        Interface_LoadItemIcon1(globalCtx, 2);
     } else if (item == ITEM_BOMB) {
         // "Bomb  Bomb  Bomb  Bomb Bomb   Bomb Bomb"
         osSyncPrintf(" 爆弾  爆弾  爆弾  爆弾 爆弾   爆弾 爆弾 \n");
@@ -1650,33 +1725,39 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
         return ITEM_NONE;
+        Interface_LoadItemIcon1(globalCtx, 2);
     } else if ((item >= ITEM_BOMBS_5) && (item <= ITEM_BOMBS_30)) {
         if ((AMMO(ITEM_BOMB) += sAmmoRefillCounts[item - ITEM_BOMBS_5]) > CUR_CAPACITY(UPG_BOMB_BAG)) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
+        Interface_LoadItemIcon1(globalCtx, 2);
         return ITEM_NONE;
     } else if (item == ITEM_BOMBCHU) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) = 10;
+            Interface_LoadItemIcon1(globalCtx, 2);
             return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMBCHU) += 10;
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
+            Interface_LoadItemIcon1(globalCtx, 2);
             return ITEM_NONE;
         }
     } else if ((item == ITEM_BOMBCHUS_5) || (item == ITEM_BOMBCHUS_20)) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
+            Interface_LoadItemIcon1(globalCtx, 2);
             return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
+            Interface_LoadItemIcon1(globalCtx, 2);
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_ARROWS_SMALL) && (item <= ITEM_ARROWS_LARGE)) {
@@ -1693,6 +1774,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 1);
         INV_CONTENT(ITEM_SLINGSHOT) = ITEM_SLINGSHOT;
         AMMO(ITEM_SLINGSHOT) = 30;
+        Interface_LoadItemIcon1(globalCtx, 3);
         return ITEM_NONE;
     } else if (item == ITEM_SEEDS) {
         AMMO(ITEM_SLINGSHOT) += 5;
@@ -1716,21 +1798,19 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
         if (!(gSaveContext.itemGetInf[1] & 8)) {
             gSaveContext.itemGetInf[1] |= 8;
+            Interface_LoadItemIcon1(globalCtx, 3);
             return ITEM_NONE;
         }
 
+        Interface_LoadItemIcon1(globalCtx, 3);
         return ITEM_SEEDS;
     } else if (item == ITEM_OCARINA_FAIRY) {
         INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
+        Interface_LoadItemIcon1(globalCtx, 2);
         return ITEM_NONE;
     } else if (item == ITEM_OCARINA_TIME) {
         INV_CONTENT(ITEM_OCARINA_TIME) = ITEM_OCARINA_TIME;
-        for (i = 1; i < 5; i++) {
-            if (gSaveContext.equips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
-                gSaveContext.equips.buttonItems[i] = ITEM_OCARINA_TIME;
-                Interface_LoadItemIcon1(globalCtx, i);
-            }
-        }
+        Interface_LoadItemIcon1(globalCtx, 2);
         return ITEM_NONE;
     } else if (item == ITEM_BEAN) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -1741,6 +1821,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             AMMO(ITEM_BEAN)++;
             BEANS_BOUGHT++;
         }
+        Interface_LoadItemIcon1(globalCtx, 2);
         return ITEM_NONE;
     } else if ((item == ITEM_HEART_PIECE_2) || (item == ITEM_HEART_PIECE)) {
         gSaveContext.inventory.questItems += 1 << (QUEST_HEART_PIECE + 4);
@@ -1782,15 +1863,6 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     } else if ((item >= ITEM_RUPEE_GREEN) && (item <= ITEM_INVALID_8)) {
         Rupees_ChangeBy(sAmmoRefillCounts[item - ITEM_RUPEE_GREEN + 10]);
         return ITEM_NONE;
-    } else if (item == ITEM_BOTTLE) {
-        temp = SLOT(item);
-
-        for (i = 0; i < 4; i++) {
-            if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
-                gSaveContext.inventory.items[temp + i] = item;
-                return ITEM_NONE;
-            }
-        }
     } else if (((item >= ITEM_POTION_RED) && (item <= ITEM_POE)) || (item == ITEM_MILK)) {
         temp = SLOT(item);
 
@@ -1800,32 +1872,27 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 temp = SLOT(item);
             }
 
-            for (i = 0; i < 5; i++) {
+            for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_BOTTLE) {
                     // "Item_Pt(1)=%d Item_Pt(2)=%d Item_Pt(3)=%d   Empty Bottle=%d   Content=%d"
                     osSyncPrintf("Item_Pt(1)=%d Item_Pt(2)=%d Item_Pt(3)=%d   空瓶=%d   中味=%d\n",
                                  gSaveContext.equips.cButtonSlots[0], gSaveContext.equips.cButtonSlots[1],
                                  gSaveContext.equips.cButtonSlots[2], temp + i, item);
 
-                    if ((temp + i) == gSaveContext.equips.cButtonSlots[0]) {
-                        gSaveContext.equips.buttonItems[1] = item;
-                        Interface_LoadItemIcon2(globalCtx, 1);
+                    gSaveContext.inventory.items[temp + i] = item;
+
+                    if (i == 0 && gSaveContext.equips.cMenu == MENU_PAGE_DOWN) {
                         gSaveContext.buttonStatus[1] = BTN_ENABLED;
-                    } else if ((temp + i) == gSaveContext.equips.cButtonSlots[1]) {
-                        gSaveContext.equips.buttonItems[2] = item;
-                        Interface_LoadItemIcon2(globalCtx, 2);
+                    } else if (i == 1 && gSaveContext.equips.cMenu == MENU_PAGE_DOWN) {
                         gSaveContext.buttonStatus[2] = BTN_ENABLED;
-                    } else if ((temp + i) == gSaveContext.equips.cButtonSlots[2]) {
-                        gSaveContext.equips.buttonItems[3] = item;
-                        Interface_LoadItemIcon1(globalCtx, 3);
+                    } else if (i == 2 && gSaveContext.equips.cMenu == MENU_PAGE_DOWN) {
                         gSaveContext.buttonStatus[3] = BTN_ENABLED;
-                    } else if ((temp + i) == gSaveContext.equips.cButtonSlots[3]) {
-                        gSaveContext.equips.buttonItems[4] = item;
-                        Interface_LoadItemIcon1(globalCtx, 4);
+                    } else if (i == 3 && gSaveContext.equips.cMenu == MENU_PAGE_DOWN) {
+
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
                     }
 
-                    gSaveContext.inventory.items[temp + i] = item;
+                    Interface_LoadItemIcon1(globalCtx, i + 1);
                     return ITEM_NONE;
                 }
             }
@@ -1833,6 +1900,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                     gSaveContext.inventory.items[temp + i] = item;
+                    Interface_LoadItemIcon1(globalCtx, i + 1);
                     return ITEM_NONE;
                 }
             }
@@ -1845,19 +1913,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         temp = INV_CONTENT(item);
         INV_CONTENT(item) = item;
 
-        if (temp != ITEM_NONE) {
-            for (i = 1; i < 5; i++) {
-                if (temp == gSaveContext.equips.buttonItems[i]) {
-                    if (item != ITEM_SOLD_OUT) {
-                        gSaveContext.equips.buttonItems[i] = item;
-                        Interface_LoadItemIcon1(globalCtx, i);
-                    } else {
-                        gSaveContext.equips.buttonItems[i] = ITEM_NONE;
-                    }
-                    return ITEM_NONE;
-                }
-            }
-        }
+        Interface_LoadItemIcon1(globalCtx, 2);
 
         return ITEM_NONE;
     }
@@ -1865,6 +1921,11 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     temp = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
     INV_CONTENT(item) = item;
+
+    Interface_LoadItemIcon1(globalCtx, 1);
+    Interface_LoadItemIcon1(globalCtx, 2);
+    Interface_LoadItemIcon1(globalCtx, 3);
+    Interface_LoadItemIcon1(globalCtx, 4);
 
     return temp;
 }
@@ -2023,13 +2084,10 @@ s32 Inventory_ReplaceItem(GlobalContext* globalCtx, u16 oldItem, u16 newItem) {
         if (gSaveContext.inventory.items[i] == oldItem) {
             gSaveContext.inventory.items[i] = newItem;
             osSyncPrintf("アイテム消去(%d)\n", i); // "Item Purge (%d)"
-            for (i = 1; i < 5; i++) {
-                if (gSaveContext.equips.buttonItems[i] == oldItem) {
-                    gSaveContext.equips.buttonItems[i] = newItem;
-                    Interface_LoadItemIcon1(globalCtx, i);
-                    break;
-                }
-            }
+            Interface_LoadItemIcon1(globalCtx, 1);
+            Interface_LoadItemIcon1(globalCtx, 2);
+            Interface_LoadItemIcon1(globalCtx, 3);
+            Interface_LoadItemIcon1(globalCtx, 4);
             return 1;
         }
     }
@@ -2075,15 +2133,16 @@ void Inventory_UpdateBottleItem(GlobalContext* globalCtx, u8 item, u8 button) {
                  gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]]);
 
     // Special case to only empty half of a Lon Lon Milk Bottle
-    if ((gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] == ITEM_MILK_BOTTLE) &&
+    if ((GetCMenuItem(globalCtx,button,MENU_RETURN_MODE_VALIDATE) == ITEM_MILK_BOTTLE) &&
         (item == ITEM_BOTTLE)) {
         item = ITEM_MILK_HALF;
     }
 
-    gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
-    gSaveContext.equips.buttonItems[button] = item;
-
-    Interface_LoadItemIcon1(globalCtx, button);
+    gSaveContext.inventory.items[SLOT_BOTTLE_1 + button - 1] = item;
+    Interface_LoadItemIcon1(globalCtx, 1);
+    Interface_LoadItemIcon1(globalCtx, 2);
+    Interface_LoadItemIcon1(globalCtx, 3);
+    Interface_LoadItemIcon1(globalCtx, 4);
 
     globalCtx->pauseCtx.cursorItem[PAUSE_ITEM] = item;
     gSaveContext.buttonStatus[button] = BTN_ENABLED;
@@ -2094,19 +2153,16 @@ s32 Inventory_ConsumeFairy(GlobalContext* globalCtx) {
     s16 i;
     s16 j;
 
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 4; i++) {
         if (gSaveContext.inventory.items[bottleSlot + i] == ITEM_FAIRY) {
-            for (j = 1; j < 5; j++) {
-                if (gSaveContext.equips.buttonItems[j] == ITEM_FAIRY) {
-                    gSaveContext.equips.buttonItems[j] = ITEM_BOTTLE;
-                    Interface_LoadItemIcon1(globalCtx, j);
-                    i = 0;
-                    bottleSlot = gSaveContext.equips.cButtonSlots[j - 1];
-                    break;
-                }
-            }
             osSyncPrintf("妖精使用＝%d\n", bottleSlot); // "Fairy Usage＝%d"
             gSaveContext.inventory.items[bottleSlot + i] = ITEM_BOTTLE;
+
+            if (gSaveContext.equips.cMenu == MENU_PAGE_DOWN)
+            {
+                Interface_LoadItemIcon1(globalCtx, i+1);
+            }
+
             return 1;
         }
     }
@@ -2587,10 +2643,7 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
                 (msgCtx->msgMode == MSGMODE_NONE) && (globalCtx->gameOverCtx.state == GAMEOVER_INACTIVE) &&
                 (globalCtx->sceneLoadFlag == 0) && (globalCtx->transitionMode == 0) && !Gameplay_InCsMode(globalCtx)) {
                 if ((gSaveContext.magic == 0) || ((func_8008F2F8(globalCtx) >= 2) && (func_8008F2F8(globalCtx) < 5)) ||
-                    ((gSaveContext.equips.buttonItems[1] != ITEM_LENS) &&
-                     (gSaveContext.equips.buttonItems[2] != ITEM_LENS) &&
-                     (gSaveContext.equips.buttonItems[3] != ITEM_LENS) &&
-                     (gSaveContext.equips.buttonItems[4] != ITEM_LENS)) ||
+                    ((GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_VALIDATE) != ITEM_LENS)) ||
                     (globalCtx->actorCtx.unk_03 == 0)) {
                     globalCtx->actorCtx.unk_03 = 0;
                     Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &D_801333D4, 4, &D_801333E0, &D_801333E0,
@@ -2812,7 +2865,10 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
 
     // C-Left Button Color & Texture
     gDPPipeSync(OVERLAY_DISP++);
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
+    gDPSetPrimColor(OVERLAY_DISP++, 0, 0,
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(0),
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(1),
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(2),
                     interfaceCtx->cLeftAlpha);
     gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(1)) << 2, R_ITEM_BTN_Y(1) << 2,
                         (OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(1)) + R_ITEM_BTN_WIDTH(1)) << 2,
@@ -2820,7 +2876,10 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(1) << 1, R_ITEM_BTN_DD(1) << 1);
 
     // C-Down Button Color & Texture
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
+    gDPSetPrimColor(OVERLAY_DISP++, 0, 0,
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(0),
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(1),
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(2),
                     interfaceCtx->cDownAlpha);
     gSPWideTextureRectangle(OVERLAY_DISP++,  OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(2)) << 2, R_ITEM_BTN_Y(2) << 2,
                         (OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(2)) + R_ITEM_BTN_WIDTH(2)) << 2,
@@ -2828,7 +2887,10 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(2) << 1, R_ITEM_BTN_DD(2) << 1);
 
     // C-Right Button Color & Texture
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
+    gDPSetPrimColor(OVERLAY_DISP++, 0, 0,
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(0), 
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(1), 
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(2),
                     interfaceCtx->cRightAlpha);
     gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(3)) << 2, R_ITEM_BTN_Y(3) << 2,
                         (OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(3)) + R_ITEM_BTN_WIDTH(3)) << 2,
@@ -2836,7 +2898,10 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(3) << 1, R_ITEM_BTN_DD(3) << 1);
 
     // C-Up Button Color & Texture
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
+    gDPSetPrimColor(OVERLAY_DISP++, 0, 0,
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(0), 
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(1), 
+                    gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(2),
                     interfaceCtx->cUpAlpha);
     gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(C_UP_BUTTON_X) << 2, C_UP_BUTTON_Y << 2,
                         (OTRGetRectDimensionFromRightEdge(C_UP_BUTTON_X) + R_ITEM_BTN_WIDTH(2)) << 2,
@@ -2918,18 +2983,30 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
 
     // Empty C Button Arrows
     for (temp = 1; temp < 5; temp++) {
-        if (gSaveContext.equips.buttonItems[temp] > 0xF0) {
+        if (GetCMenuItem(globalCtx, temp, MENU_RETURN_MODE_ICON) > 0xF0) {
             if (temp == 1) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0,
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(0),
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(1),
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(2),
                                 interfaceCtx->cLeftAlpha);
             } else if (temp == 2) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0,
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(0),
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(1),
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(2),
                                 interfaceCtx->cDownAlpha);
             } else if (temp == 3) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0,
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(0),
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(1),
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(2),
                                 interfaceCtx->cRightAlpha);
             } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0,
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(0),
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(1),
+                                gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX ? 128 : R_C_BTN_COLOR(2),
                                 interfaceCtx->cUpAlpha);
             }
 
@@ -2958,6 +3035,12 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             }
         }
     }
+
+    Interface_LoadItemIcon1(globalCtx, 1);
+    Interface_LoadItemIcon1(globalCtx, 2);
+    Interface_LoadItemIcon1(globalCtx, 3);
+    Interface_LoadItemIcon1(globalCtx, 4);
+    func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3071);
 }
@@ -2995,7 +3078,16 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3105);
 
-    i = gSaveContext.equips.buttonItems[button];
+    if (gSaveContext.equips.cMenu == MENU_PAGE_INDEX || gSaveContext.equips.cMenu == MENU_PAGE_D_INDEX) {
+        i = ITEM_NONE;
+    } else {
+        if (gSaveContext.equips.cMenu >= MENU_PAGE_D_INDEX) {
+            i = GetCMenuItem(globalCtx, button + 4, MENU_RETURN_MODE_VALIDATE);
+        } else {
+            i = GetCMenuItem(globalCtx, button, MENU_RETURN_MODE_VALIDATE);
+        }
+
+    }
 
     if ((i == ITEM_STICK) || (i == ITEM_NUT) || (i == ITEM_BOMB) || (i == ITEM_BOW) ||
         ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) || (i == ITEM_SLINGSHOT) || (i == ITEM_BOMBCHU) ||
@@ -3402,10 +3494,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
         gDPPipeSync(OVERLAY_DISP++);
 
         // C-Left Button Icon & Ammo Count
-        if (gSaveContext.equips.buttonItems[1] < 0xF0) {
+        if (GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_ICON) < 0xF0) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->cLeftAlpha);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-            Interface_DrawItemIconTexture(globalCtx, gItemIcons[gSaveContext.equips.buttonItems[1]], 1);
+            Interface_DrawItemIconTexture(globalCtx, gItemIcons[GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_ICON)], 1);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -3415,10 +3507,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
         gDPPipeSync(OVERLAY_DISP++);
 
         // C-Down Button Icon & Ammo Count
-        if (gSaveContext.equips.buttonItems[2] < 0xF0) {
+        if (GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_ICON) < 0xF0) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->cDownAlpha);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-            Interface_DrawItemIconTexture(globalCtx, gItemIcons[gSaveContext.equips.buttonItems[2]], 2);
+            Interface_DrawItemIconTexture(globalCtx, gItemIcons[GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_ICON)], 2);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -3428,10 +3520,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
         gDPPipeSync(OVERLAY_DISP++);
 
         // C-Right Button Icon & Ammo Count
-        if (gSaveContext.equips.buttonItems[3] < 0xF0) {
+        if (GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_ICON) < 0xF0) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->cRightAlpha);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-            Interface_DrawItemIconTexture(globalCtx, gItemIcons[gSaveContext.equips.buttonItems[3]], 3);
+            Interface_DrawItemIconTexture(globalCtx, gItemIcons[GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_ICON)], 3);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -3441,10 +3533,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
         gDPPipeSync(OVERLAY_DISP++);
 
         // C-Up Button Icon & Ammo Count
-        if (gSaveContext.equips.buttonItems[4] < 0xF0) {
+        if (GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_ICON) < 0xF0) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->cUpAlpha);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-            Interface_DrawItemIconTexture(globalCtx, gItemIcons[gSaveContext.equips.buttonItems[4]], 4);
+            Interface_DrawItemIconTexture(globalCtx, gItemIcons[GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_ICON)], 4);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -3621,12 +3713,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
                     globalCtx->nextEntranceIndex = spoilingItemEntrances[svar1];
                     INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
 
-                    for (svar2 = 1; svar2 < 4; svar2++) {
-                        if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
-                            gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
-                            Interface_LoadItemIcon1(globalCtx, svar2);
-                        }
-                    }
+                    Interface_LoadItemIcon1(globalCtx, 1);
+                    Interface_LoadItemIcon1(globalCtx, 2);
+                    Interface_LoadItemIcon1(globalCtx, 3);
+                    Interface_LoadItemIcon1(globalCtx, 4);
                 }
             }
         }
@@ -4395,5 +4485,1717 @@ void Interface_Update(GlobalContext* globalCtx) {
         } else {
             gSaveContext.sunsSongState = SUNSSONG_SPECIAL;
         }
+    }
+}
+
+// TODO: Setup minigame rules
+u8 GetCMenuItem(GlobalContext* globalCtx, u8 button, MenuReturnMode menuReturnMode) {
+    Player* player = GET_PLAYER(globalCtx);
+    if (player == NULL) {
+        return ITEM_NONE;
+    }
+
+    bool isEquipment = (gSaveContext.equips.cMenu > MENU_PAGE_D_INDEX &&
+                      (button == 5 || button == 7 || button == 8));
+    
+    // Generic Usage Rules
+    if (menuReturnMode == MENU_RETURN_MODE_VALIDATE && 
+        gSaveContext.equips.cMenu != MENU_PAGE_INDEX &&
+        gSaveContext.equips.cMenu != MENU_PAGE_D_INDEX) {
+        // 2 = underwater with iron boots
+        // 3 = swimming
+        // 4 = underwater without iron boots
+        MessageContext* msgCtx = &globalCtx->msgCtx;
+        InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+        
+        // I assume this means if you're in a cutscene that isn't taking place in Lon Lon Ranch
+        if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
+            ((globalCtx->sceneNum == SCENE_SPOT20) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
+            // what does this do? I assume if you're not being prompted to use an item?
+            if (msgCtx->msgMode == MSGMODE_NONE) {
+                // cannot use items underwater with iron boots
+                // unless that item is in the hookshot slot
+                if (func_8008F2F8(globalCtx) == 2 && !isEquipment && 
+                    !(gSaveContext.equips.cMenu == MENU_PAGE_RIGHT && button == 3)) {
+                        return ITEM_NONE;
+                } else
+
+                // cannot use items while swimming
+                if (func_8008F2F8(globalCtx) == 3 && !isEquipment) {
+                    return ITEM_NONE;
+                } else
+                
+                // cannot use items while underwater without iron boots
+                if (func_8008F2F8(globalCtx) == 4 && !isEquipment) {
+                    return ITEM_NONE;
+                } else
+
+                // what does this do? I do not know.
+                if ((player->stateFlags1 & 0x00200000) || (player->stateFlags2 & 0x00040000)) {
+                    return ITEM_NONE;
+                } else
+
+                // has something to do with events
+                // whatever it is, you cannot use items
+                if ((gSaveContext.eventInf[0] & 0xF) == 1) {
+                    // unless that item is in the ocarina slot
+                    // is for those events that want you to use the ocarina?
+                    // probably
+                    if (gSaveContext.equips.cMenu != MENU_PAGE_D_UP || button != 6) {
+                        return ITEM_NONE;
+                    }
+                } 
+                
+                // handle item restrictions
+                // these aren't generics rule but they rely on a lot of generic rule checks
+                else {
+                    // if there is a bottle restriction going on
+                    if (interfaceCtx->restrictions.bottles != 0) {
+                        // cannot use bottles
+                        if (gSaveContext.equips.cMenu == MENU_PAGE_DOWN) {
+                            return ITEM_NONE;
+                        }
+                    }
+
+                    // if there is a trade item restriction going on
+                    if (interfaceCtx->restrictions.tradeItems != 0) {
+                        // cannot use trade items
+                        if (gSaveContext.equips.cMenu == MENU_PAGE_D_DOWN && button == 6) {
+                            return ITEM_NONE;
+                        }
+                    }
+
+                    // if there is a hookshot slot restriction going on
+                    if (interfaceCtx->restrictions.hookshot != 0) {
+                        // cannot use items in the hookshot slot
+                        if (gSaveContext.equips.cMenu == MENU_PAGE_RIGHT && button == 3) {
+                            return ITEM_NONE;
+                        }
+                    }
+
+                    // if there is an ocarina slot restriction going on
+                    if (interfaceCtx->restrictions.ocarina != 0) {
+                        // cannot use items in the ocarina slot
+                        if (gSaveContext.equips.cMenu == MENU_PAGE_D_UP && button == 6) {
+                            return ITEM_NONE;
+                        }
+                    }
+
+                    // if there is a farore's wind slot restriction going on
+                    if (interfaceCtx->restrictions.farores != 0) {
+                        // cannot use items in the farore's wind slot
+                        if (gSaveContext.equips.cMenu == MENU_PAGE_UP && button == 1) {
+                            return ITEM_NONE;
+                        }
+                    }
+
+                    // if there is a din's fire and nayru's love slot restriction going on
+                    if (interfaceCtx->restrictions.dinsNayrus != 0) {
+                        // cannot use items in the din's fire and nayru's love slots
+                        if (gSaveContext.equips.cMenu == MENU_PAGE_UP && (button == 3 || button == 4)) {
+                            return ITEM_NONE;
+                        }
+                    }
+
+                    // cannot use items if there is a generic slot restriction going on
+                    if (interfaceCtx->restrictions.all != 0) {
+                        // unless that item is in a bottle slot, trade slot, the ocarina slot, or lens slot
+                        // except if it is in the lens slot and the player is in the treasure chest shop
+                        if (gSaveContext.equips.cMenu != MENU_PAGE_DOWN && 
+                            (gSaveContext.equips.cMenu != MENU_PAGE_D_DOWN || button != 6) &&
+                            (gSaveContext.equips.cMenu != MENU_PAGE_D_UP || button != 6) &&
+                            (gSaveContext.equips.cMenu != MENU_PAGE_D_RIGHT || button != 6 || 
+                                globalCtx->sceneNum == SCENE_TAKARAYA)) {
+                            return ITEM_NONE;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    switch(gSaveContext.equips.cMenu) {
+        case MENU_PAGE_INDEX: 
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE:
+                    return ITEM_NUT;
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            gSaveContext.equips.cMenu = MENU_PAGE_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 2:
+                            gSaveContext.equips.cMenu = MENU_PAGE_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 3:
+                            gSaveContext.equips.cMenu = MENU_PAGE_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 4:
+                            gSaveContext.equips.cMenu = MENU_PAGE_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 5:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 7:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_LEFT:
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE:
+                    switch(button) {
+                        case 1:
+                            // boomerang requires link to be a child
+                            if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
+                                return ITEM_NONE;
+                            }
+                            return gSaveContext.inventory.items[SLOT_BOOMERANG];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_BOMB];
+                        break;
+
+                        case 3:
+                            // slingshot requires link to be a child
+                            if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
+                                return ITEM_NONE;
+                            }
+                            return gSaveContext.inventory.items[SLOT_SLINGSHOT];
+                        break;
+
+                        case 4:
+                            // stick requires link to be a child
+                            if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
+                                return ITEM_NONE;
+                            }
+                            return gSaveContext.inventory.items[SLOT_STICK];
+                        break;
+
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                            return ITEM_NUT;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                            return gSaveContext.inventory.items[SLOT_BOOMERANG];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_BOMB];
+                        break;
+
+                        case 3:
+                            return gSaveContext.inventory.items[SLOT_SLINGSHOT];
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_STICK];
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            return gSaveContext.inventory.items[SLOT_BOOMERANG];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_BOMB];
+                        break;
+
+                        case 3:
+                            return gSaveContext.inventory.items[SLOT_SLINGSHOT];
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_STICK];
+                        break;
+
+                        case 5:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 7:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_RIGHT:
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE:
+                    switch(button) {
+                        case 1:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // ice arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_ICE] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_ICE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HAMMER];
+                            } else {
+                                // hammer requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HAMMER];
+                            }
+                        break;
+
+                        case 2:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // light arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_LIGHT] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_LIGHT;
+                                }
+                                return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                            } else {
+                                return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                            }
+                        break;
+
+                        case 3:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // fire arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_FIRE] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_FIRE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HOOKSHOT];
+                            } else {
+                                // hookshot requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HOOKSHOT];
+                            }
+                        break;
+
+                        case 4:
+                            // bow requires link to be an adult
+                            if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                return ITEM_NONE;
+                            }
+                            return gSaveContext.inventory.items[SLOT_BOW];
+                        break;
+
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                            return ITEM_NUT;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // ice arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_ICE] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_ICE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HAMMER];
+                            } else {
+                                // hammer requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HAMMER];
+                            }
+                        break;
+
+                        case 2:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // light arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_LIGHT] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_LIGHT;
+                                }
+                                return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                            } else {
+                                return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                            }
+                        break;
+
+                        case 3:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // fire arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_FIRE] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_FIRE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HOOKSHOT];
+                            } else {
+                                return gSaveContext.inventory.items[SLOT_HOOKSHOT];
+                            }
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_BOW];
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // ice arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_ICE] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_ICE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HAMMER];
+                            } else {
+                                // hammer requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HAMMER];
+                            }
+                        break;
+
+                        case 2:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // light arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_LIGHT] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_LIGHT;
+                                }
+                                return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                            } else {
+                                return gSaveContext.inventory.items[SLOT_BOMBCHU];
+                            }
+                        break;
+
+                        case 3:
+                            if (player->heldItemId == ITEM_BOW ||
+                            (player->heldItemId >= ITEM_BOW_ARROW_FIRE &&
+                            player->heldItemId <= ITEM_BOW_ARROW_LIGHT)) {
+                                // fire arrow requires link to be an adult
+                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                    return ITEM_NONE;
+                                }
+                                if (gSaveContext.inventory.items[SLOT_BOW] != ITEM_NONE &&
+                                    gSaveContext.inventory.items[SLOT_ARROW_FIRE] != ITEM_NONE) {
+                                    return ITEM_BOW_ARROW_FIRE;
+                                }
+                                return gSaveContext.inventory.items[SLOT_HOOKSHOT];
+                            } else {
+                                return gSaveContext.inventory.items[SLOT_HOOKSHOT];
+                            }
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_BOW];
+                        break;
+
+                        case 5:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 7:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_DOWN:
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE:
+                    switch(button) {
+                        case 1:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_1];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_2];
+                        break;
+
+                        case 3:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_3];
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_4];
+                        break;
+
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                            return ITEM_NUT;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_1];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_2];
+                        break;
+
+                        case 3:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_3];
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_4];
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_1];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_2];
+                        break;
+
+                        case 3:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_3];
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_BOTTLE_4];
+                        break;
+
+                        case 5:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 7:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_UP:
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE:
+                    switch(button) {
+                        case 1:
+                            return gSaveContext.inventory.items[SLOT_FARORES_WIND];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_NUT];
+                        break;
+
+                        case 3:
+                            return gSaveContext.inventory.items[SLOT_NAYRUS_LOVE];
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_DINS_FIRE];
+                        break;
+
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                            return ITEM_NUT;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                            return gSaveContext.inventory.items[SLOT_FARORES_WIND];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_NUT];
+                        break;
+
+                        case 3:
+                            return gSaveContext.inventory.items[SLOT_NAYRUS_LOVE];
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_DINS_FIRE];
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            return gSaveContext.inventory.items[SLOT_FARORES_WIND];
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_NUT];
+                        break;
+
+                        case 3:
+                            return gSaveContext.inventory.items[SLOT_NAYRUS_LOVE];
+                        break;
+
+                        case 4:
+                            return gSaveContext.inventory.items[SLOT_DINS_FIRE];
+                        break;
+
+                        case 5:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 7:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_D_INDEX: 
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE:
+                    return ITEM_NUT;
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            gSaveContext.equips.cMenu = MENU_PAGE_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 2:
+                            gSaveContext.equips.cMenu = MENU_PAGE_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 3:
+                            gSaveContext.equips.cMenu = MENU_PAGE_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 4:
+                            gSaveContext.equips.cMenu = MENU_PAGE_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 5:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 7:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            gSaveContext.equips.cMenu = MENU_PAGE_D_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_D_LEFT: 
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE: 
+                    switch(button) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                            return ITEM_NUT;
+                        break;
+
+                        case 5:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_TUNIC, PLAYER_TUNIC_GORON) || 
+                                LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_TUNIC_GORON;
+                        break;
+
+                        case 6:
+                            if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
+                                return ITEM_NONE;
+                            }
+
+                            return gSaveContext.inventory.items[SLOT_BEAN];
+                        break;
+
+                        case 7:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_TUNIC, PLAYER_TUNIC_ZORA) ||
+                                LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_TUNIC_ZORA;
+                        break;
+
+                        case 8:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI)) {
+                                return ITEM_NONE;
+                            }
+
+                            return ITEM_TUNIC_KOKIRI;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_TUNIC, PLAYER_TUNIC_GORON)) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_TUNIC_GORON;
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_BEAN];
+                        break;
+
+                        case 3:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_TUNIC, PLAYER_TUNIC_ZORA)) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_TUNIC_ZORA;
+                        break;
+
+                        case 4:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI)) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_TUNIC_KOKIRI;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            gSaveContext.equips.cMenu = MENU_PAGE_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 2:
+                            gSaveContext.equips.cMenu = MENU_PAGE_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 3:
+                            gSaveContext.equips.cMenu = MENU_PAGE_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 4:
+                            gSaveContext.equips.cMenu = MENU_PAGE_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 5:
+                            if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON+1);
+                                Player_SetEquipmentData(globalCtx, player);
+                            }
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
+                                return ITEM_NONE;
+                            }
+
+                            return gSaveContext.inventory.items[SLOT_BEAN];
+                        break;
+
+                        case 7:
+                            if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_ZORA+1);
+                                Player_SetEquipmentData(globalCtx, player);
+                            }
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI+1);
+                            Player_SetEquipmentData(globalCtx, player);
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_D_DOWN: 
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE: 
+                    switch(button) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                            return ITEM_NUT;
+                        break;
+
+                        case 5:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SHIELD, PLAYER_SHIELD_DEKU-1) ||
+                                LINK_AGE_IN_YEARS != YEARS_CHILD) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_SHIELD_DEKU;
+                        break;
+
+                        case 6:
+                            if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+                                return gSaveContext.inventory.items[SLOT_TRADE_CHILD];
+                            } else if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                                return gSaveContext.inventory.items[SLOT_TRADE_ADULT];
+                            }
+                        break;
+
+                        case 7:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR-1) ||
+                                LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_SHIELD_MIRROR;
+                        break;
+
+                        case 8:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SHIELD, PLAYER_SHIELD_HYLIAN-1)) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_SHIELD_HYLIAN;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SHIELD, PLAYER_SHIELD_DEKU-1)) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_SHIELD_DEKU;
+                        break;
+
+                        case 2:
+                            if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+                                return gSaveContext.inventory.items[SLOT_TRADE_CHILD];
+                            } else if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                                return gSaveContext.inventory.items[SLOT_TRADE_ADULT];
+                            }
+                        break;
+
+                        case 3:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR-1)) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_SHIELD_MIRROR;
+                        break;
+
+                        case 4:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SHIELD, PLAYER_SHIELD_HYLIAN-1)) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_SHIELD_HYLIAN;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            gSaveContext.equips.cMenu = MENU_PAGE_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 2:
+                            gSaveContext.equips.cMenu = MENU_PAGE_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 3:
+                            gSaveContext.equips.cMenu = MENU_PAGE_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 4:
+                            gSaveContext.equips.cMenu = MENU_PAGE_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 5:
+                            Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+                            Player_SetEquipmentData(globalCtx, player);
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+                                return gSaveContext.inventory.items[SLOT_TRADE_CHILD];
+                            } else if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                                return gSaveContext.inventory.items[SLOT_TRADE_ADULT];
+                            }
+                        break;
+
+                        case 7:
+                            Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR);
+                            Player_SetEquipmentData(globalCtx, player);
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_HYLIAN);
+                            Player_SetEquipmentData(globalCtx, player);
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_D_RIGHT: 
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE: 
+                    switch(button) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                            return ITEM_NUT;
+                        break;
+
+                        case 5:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_BOOTS, PLAYER_BOOTS_IRON) ||
+                                LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_BOOTS_IRON;
+                        break;
+
+                        case 6:
+                            return gSaveContext.inventory.items[SLOT_LENS];
+                        break;
+
+                        case 7:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_BOOTS, PLAYER_BOOTS_HOVER) ||
+                                LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_BOOTS_HOVER;
+                        break;
+
+                        case 8:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI)) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_BOOTS_KOKIRI;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_BOOTS, PLAYER_BOOTS_IRON)) {
+                                return ITEM_NONE;
+                            }
+
+                            return ITEM_BOOTS_IRON;
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_LENS];
+                        break;
+
+                        case 3:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_BOOTS, PLAYER_BOOTS_HOVER)) {
+                                return ITEM_NONE;
+                            }
+
+                            return ITEM_BOOTS_HOVER;
+                        break;
+
+                        case 4:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI)) {
+                                return ITEM_NONE;
+                            }
+
+                            return ITEM_BOOTS_KOKIRI;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            gSaveContext.equips.cMenu = MENU_PAGE_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 2:
+                            gSaveContext.equips.cMenu = MENU_PAGE_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 3:
+                            gSaveContext.equips.cMenu = MENU_PAGE_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 4:
+                            gSaveContext.equips.cMenu = MENU_PAGE_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 5:
+                            
+                            Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_IRON+1);
+                            Player_SetEquipmentData(globalCtx, player);
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            return gSaveContext.inventory.items[SLOT_LENS];
+                        break;
+
+                        case 7:
+                            Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_HOVER+1);
+                            Player_SetEquipmentData(globalCtx, player);
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI+1);
+                            Player_SetEquipmentData(globalCtx, player);
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        case MENU_PAGE_D_UP: 
+            switch (menuReturnMode) {
+                case MENU_RETURN_MODE_VALIDATE: 
+                    switch(button) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                            return ITEM_NUT;
+                        break;
+
+                        case 5:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 0) ||
+                                LINK_AGE_IN_YEARS != YEARS_CHILD) {
+                                return ITEM_NONE;
+                            }
+                            
+                            return ITEM_SWORD_KOKIRI;
+                        break;
+
+                        case 6:
+                            return gSaveContext.inventory.items[SLOT_OCARINA];
+                        break;
+
+                        case 7:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) ||
+                                LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                return ITEM_NONE;
+                            }
+                            return ITEM_SWORD_MASTER;
+                        break;
+
+                        case 8:
+
+
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 2) ||
+                                LINK_AGE_IN_YEARS != YEARS_ADULT) {
+                                return ITEM_NONE;
+                            }
+
+                            if (gSaveContext.bgsFlag != 0) {
+                                return ITEM_SWORD_BGS;
+                            } else
+                            if (gSaveContext.bgsFlag == 0) {
+                                return ITEM_SWORD_KNIFE;
+                            }
+                            
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_ICON: 
+                    switch(button) {
+                        case 1:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 0)) {
+                                return ITEM_NONE;
+                            }
+
+                            return ITEM_SWORD_KOKIRI;
+                        break;
+
+                        case 2:
+                            return gSaveContext.inventory.items[SLOT_OCARINA];
+                        break;
+
+                        case 3:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
+                                return ITEM_NONE;
+                            }
+
+                            return ITEM_SWORD_MASTER;
+                        break;
+
+                        case 4:
+                            if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 2)) {
+                                return ITEM_NONE;
+                            }
+
+                            if (gSaveContext.bgsFlag != 0 || !(gBitFlags[3] & gSaveContext.inventory.equipment)) {
+                                return ITEM_SWORD_BGS;
+                            } else {
+                                return ITEM_SWORD_KNIFE;
+                            }
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                case MENU_RETURN_MODE_USE:
+                    switch(button) {
+                        case 1:
+                            gSaveContext.equips.cMenu = MENU_PAGE_LEFT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 2:
+                            gSaveContext.equips.cMenu = MENU_PAGE_DOWN;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 3:
+                            gSaveContext.equips.cMenu = MENU_PAGE_RIGHT;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 4:
+                            gSaveContext.equips.cMenu = MENU_PAGE_UP;
+                            Interface_LoadItemIcon1(globalCtx, 1);
+                            Interface_LoadItemIcon1(globalCtx, 2);
+                            Interface_LoadItemIcon1(globalCtx, 3);
+                            Interface_LoadItemIcon1(globalCtx, 4);
+                            func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
+                            return ITEM_NONE;
+                        break;
+
+                        case 5:
+                            Inventory_ChangeEquipment(EQUIP_SWORD, 1);
+                            gSaveContext.infTable[29] = 0;
+                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+                            Interface_LoadItemIcon1(globalCtx, 0);
+
+                            return ITEM_NONE;
+                        break;
+
+                        case 6:
+                            return gSaveContext.inventory.items[SLOT_OCARINA];
+                        break;
+
+                        case 7:
+                            Inventory_ChangeEquipment(EQUIP_SWORD, 2);
+                            gSaveContext.infTable[29] = 0;
+                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                            Interface_LoadItemIcon1(globalCtx, 0);
+
+                            return ITEM_NONE;
+                        break;
+
+                        case 8:
+                            Inventory_ChangeEquipment(EQUIP_SWORD, 3);
+                            gSaveContext.infTable[29] = 0;
+
+                            if (gSaveContext.bgsFlag != 0 || !(gBitFlags[3] & gSaveContext.inventory.equipment)) {
+                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+                                gSaveContext.swordHealth = 8;
+                            } else {
+                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
+                            }
+                            
+                            Interface_LoadItemIcon1(globalCtx, 0);
+
+                            return ITEM_NONE;
+                        break;
+
+                        default:
+                            return ITEM_NONE;
+                        break;
+                    }
+                break;
+
+                default:
+                    return ITEM_NONE;
+                break;
+            }
+        break;
+
+        default:
+            return ITEM_NONE;
+        break;
     }
 }

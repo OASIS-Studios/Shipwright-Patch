@@ -94,27 +94,27 @@ void func_801109B0(GlobalContext* globalCtx) {
                             "../z_construct.c", 203);
     }
 
-    if (gSaveContext.equips.buttonItems[1] < 0xF0) {
+    if (GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_ICON)) {
         DmaMgr_SendRequest1(interfaceCtx->iconItemSegment + 0x1000,
-                            _icon_item_staticSegmentRomStart + gSaveContext.equips.buttonItems[1] * 0x1000, 0x1000,
+                            _icon_item_staticSegmentRomStart + GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_ICON) * 0x1000, 0x1000,
                             "../z_construct.c", 209);
     }
 
-    if (gSaveContext.equips.buttonItems[2] < 0xF0) {
+    if (GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_ICON)) {
         DmaMgr_SendRequest1(interfaceCtx->iconItemSegment + 0x2000,
-                            _icon_item_staticSegmentRomStart + gSaveContext.equips.buttonItems[2] * 0x1000, 0x1000,
+                            _icon_item_staticSegmentRomStart + GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_ICON) * 0x1000, 0x1000,
                             "../z_construct.c", 214);
     }
 
-    if (gSaveContext.equips.buttonItems[3] < 0xF0) {
+    if (GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_ICON)) {
         DmaMgr_SendRequest1(interfaceCtx->iconItemSegment + 0x3000,
-                            _icon_item_staticSegmentRomStart + gSaveContext.equips.buttonItems[3] * 0x1000, 0x1000,
+                            _icon_item_staticSegmentRomStart + GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_ICON) * 0x1000, 0x1000,
                             "../z_construct.c", 219);
     }
 
-    if (gSaveContext.equips.buttonItems[4] < 0xF0) {
+    if (GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_ICON)) {
         DmaMgr_SendRequest1(interfaceCtx->iconItemSegment + 0x4000,
-                            _icon_item_staticSegmentRomStart + gSaveContext.equips.buttonItems[4] * 0x1000, 0x1000,
+                            _icon_item_staticSegmentRomStart + GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_ICON) * 0x1000, 0x1000,
                             "../z_construct.c", 219);
     }
 

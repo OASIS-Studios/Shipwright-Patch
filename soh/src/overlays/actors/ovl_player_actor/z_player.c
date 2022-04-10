@@ -1044,7 +1044,7 @@ static LinkAnimationHeader* D_80854378[] = {
 static u8 D_80854380[2] = { 0x18, 0x19 };
 static u8 D_80854384[2] = { 0x1A, 0x1B };
 
-static u16 D_80854388[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_CUP };
+static u16 D_80854388[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_CUP, BTN_DLEFT, BTN_DDOWN, BTN_DRIGHT, BTN_DUP };
 
 static u8 sMagicSpellCosts[] = { 12, 24, 24, 12, 24, 12 };
 
@@ -1849,7 +1849,7 @@ s32 func_80833C98(s32 item1, s32 actionParam) {
 }
 
 s32 func_80833CDC(GlobalContext* globalCtx, s32 index) {
-    if (index >= 5) {
+    if (index >= 9) {
         return ITEM_NONE;
     }
     else if (globalCtx->bombchuBowlingStatus != 0) {
@@ -1858,17 +1858,29 @@ s32 func_80833CDC(GlobalContext* globalCtx, s32 index) {
     else if (index == 0) {
         return B_BTN_ITEM;
     }
-    else if (index == 1) {
-        return C_BTN_ITEM(0);
+    else if (index == 1 && GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
+        return GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_USE);
     }
-    else if (index == 2) {
-        return C_BTN_ITEM(1);
+    else if (index == 2 && GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
+        return GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_USE);
     }
-    else if (index == 3) {
-        return C_BTN_ITEM(2);
+    else if (index == 3 && GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
+        return GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_USE);
     }
-    else {
-        return C_BTN_ITEM(3);
+    else if (index == 4 && GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
+        return GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_USE);
+    }
+    else if (index == 5 && GetCMenuItem(globalCtx, 5, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
+        return GetCMenuItem(globalCtx, 5, MENU_RETURN_MODE_USE);
+    }
+    else if (index == 6 && GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
+        return GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_USE);
+    }
+    else if (index == 7 && GetCMenuItem(globalCtx, 7, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
+        return GetCMenuItem(globalCtx, 7, MENU_RETURN_MODE_USE);
+    }
+    else if (index == 8 && GetCMenuItem(globalCtx, 8, MENU_RETURN_MODE_VALIDATE) != ITEM_NONE) {
+        return GetCMenuItem(globalCtx, 8, MENU_RETURN_MODE_USE);
     }
 }
 
@@ -1879,17 +1891,21 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
 
     if (this->currentMask != PLAYER_MASK_NONE) {
         maskActionParam = this->currentMask - 1 + PLAYER_AP_MASK_KEATON;
-        if (!func_80833C98(C_BTN_ITEM(0), maskActionParam) && !func_80833C98(C_BTN_ITEM(1), maskActionParam) &&
-            !func_80833C98(C_BTN_ITEM(2), maskActionParam) && !func_80833C98(C_BTN_ITEM(3), maskActionParam)) {
+        if (!func_80833C98(GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_VALIDATE), maskActionParam) && !func_80833C98(GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_VALIDATE), maskActionParam) &&
+            !func_80833C98(GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_VALIDATE), maskActionParam) && !func_80833C98(GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_VALIDATE), maskActionParam) &&
+            !func_80833C98(GetCMenuItem(globalCtx, 5, MENU_RETURN_MODE_VALIDATE), maskActionParam) && !func_80833C98(GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_VALIDATE), maskActionParam) &&
+            !func_80833C98(GetCMenuItem(globalCtx, 7, MENU_RETURN_MODE_VALIDATE), maskActionParam) && !func_80833C98(GetCMenuItem(globalCtx, 8, MENU_RETURN_MODE_VALIDATE), maskActionParam)) {
             this->currentMask = PLAYER_MASK_NONE;
         }
     }
 
     if (!(this->stateFlags1 & (PLAYER_STATE1_11 | PLAYER_STATE1_29)) && !func_8008F128(this)) {
         if (this->itemActionParam >= PLAYER_AP_FISHING_POLE) {
-            if (!func_80833C50(this, B_BTN_ITEM) && !func_80833C50(this, C_BTN_ITEM(0)) &&
-                !func_80833C50(this, C_BTN_ITEM(1)) && !func_80833C50(this, C_BTN_ITEM(2))
-                 && !func_80833C50(this, C_BTN_ITEM(3))) {
+            if (!func_80833C50(this, B_BTN_ITEM) && !func_80833C50(this, GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_VALIDATE)) &&
+                !func_80833C50(this, GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_VALIDATE)) && !func_80833C50(this, GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_VALIDATE)) &&
+                !func_80833C50(this, GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_VALIDATE)) && !func_80833C50(this, GetCMenuItem(globalCtx, 5, MENU_RETURN_MODE_VALIDATE)) &&
+                !func_80833C50(this, GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_VALIDATE)) && !func_80833C50(this, GetCMenuItem(globalCtx, 7, MENU_RETURN_MODE_VALIDATE)) &&
+                !func_80833C50(this, GetCMenuItem(globalCtx, 8, MENU_RETURN_MODE_VALIDATE))) {
                 func_80835F44(globalCtx, this, ITEM_NONE);
                 return;
             }
@@ -1913,7 +1929,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
             if ((item < ITEM_NONE_FE) && (Player_ItemToActionParam(item) == this->heldItemActionParam)) {
                 D_80853618 = true;
             }
-        }
+        } 
         else {
             this->heldItemButton = i;
             func_80835F44(globalCtx, this, item);
@@ -2830,6 +2846,11 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                     (D_80854164[gPlayerModelTypes[this->modelGroup][PLAYER_MODELGROUPENTRY_ANIM]][nextAnimType] !=
                         PLAYER_D_808540F4_0)) {
                     this->heldItemId = item;
+                    Interface_LoadItemIcon1(globalCtx, 1);
+                    Interface_LoadItemIcon1(globalCtx, 2);
+                    Interface_LoadItemIcon1(globalCtx, 3);
+                    Interface_LoadItemIcon1(globalCtx, 4);
+                    func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
                     this->stateFlags1 |= PLAYER_STATE1_8;
                 }
                 else {
@@ -11146,7 +11167,8 @@ void func_8084B1D8(Player* this, GlobalContext* globalCtx) {
             func_80833B2C(this) || (!func_8002DD78(this) && !func_808334B4(this)))) ||
             ((this->unk_6AD == 1) &&
                 CHECK_BTN_ANY(sControlInput->press.button,
-                    BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN | BTN_L)))) {
+                    BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN | BTN_L |
+                    BTN_DUP | BTN_DLEFT | BTN_DRIGHT | BTN_DDOWN)))) {
         func_8083C148(this, globalCtx);
         func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
     }

@@ -23,35 +23,47 @@ void KaleidoSetup_Update(GlobalContext* globalCtx) {
                 pauseCtx->debugState = 3;
             }
         } else if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-            gSaveContext.unk_13EE = gSaveContext.unk_13EA;
+            if (gSaveContext.equips.cMenu != MENU_PAGE_INDEX && gSaveContext.equips.cMenu != MENU_PAGE_D_INDEX) {
+                gSaveContext.equips.cMenu = gSaveContext.equips.cMenu < MENU_PAGE_D_INDEX ? MENU_PAGE_INDEX : MENU_PAGE_D_INDEX;
+                
+                Interface_LoadItemIcon1(globalCtx, 1);
+                Interface_LoadItemIcon1(globalCtx, 2);
+                Interface_LoadItemIcon1(globalCtx, 3);
+                Interface_LoadItemIcon1(globalCtx, 4);
 
-            if (CHECK_BTN_ALL(input->cur.button, BTN_L))
-                CVar_SetS32("gPauseTriforce", 1);
-            else
-                CVar_SetS32("gPauseTriforce", 0);
-
-
-            WREG(16) = -175;
-            WREG(17) = 155;
-
-            pauseCtx->unk_1EA = 0;
-            pauseCtx->unk_1E4 = 1;
-
-            if (ZREG(48) == 0) {
-                pauseCtx->eye.x = sKaleidoSetupEyeX0[pauseCtx->pageIndex];
-                pauseCtx->eye.z = sKaleidoSetupEyeZ0[pauseCtx->pageIndex];
-                pauseCtx->pageIndex = sKaleidoSetupKscpPos0[pauseCtx->pageIndex];
-            } else {
-                pauseCtx->eye.x = sKaleidoSetupEyeX1[pauseCtx->pageIndex];
-                pauseCtx->eye.z = sKaleidoSetupEyeZ1[pauseCtx->pageIndex];
-                pauseCtx->pageIndex = sKaleidoSetupKscpPos1[pauseCtx->pageIndex];
+                func_80082644(globalCtx, 255 - (gSaveContext.unk_13EC << 5 < 0 ? 0 : gSaveContext.unk_13EC << 5));
             }
+            else {
+                gSaveContext.unk_13EE = gSaveContext.unk_13EA;
 
-            pauseCtx->mode = (u16)(pauseCtx->pageIndex * 2) + 1;
-            pauseCtx->state = 1;
+                if (CHECK_BTN_ALL(input->cur.button, BTN_L))
+                    CVar_SetS32("gPauseTriforce", 1);
+                else
+                    CVar_SetS32("gPauseTriforce", 0);
 
-            osSyncPrintf("Ｍｏｄｅ=%d  eye.x=%f,  eye.z=%f  kscp_pos=%d\n", pauseCtx->mode, pauseCtx->eye.x,
-                         pauseCtx->eye.z, pauseCtx->pageIndex);
+
+                WREG(16) = -175;
+                WREG(17) = 155;
+
+                pauseCtx->unk_1EA = 0;
+                pauseCtx->unk_1E4 = 1;
+
+                if (ZREG(48) == 0) {
+                    pauseCtx->eye.x = sKaleidoSetupEyeX0[pauseCtx->pageIndex];
+                    pauseCtx->eye.z = sKaleidoSetupEyeZ0[pauseCtx->pageIndex];
+                    pauseCtx->pageIndex = sKaleidoSetupKscpPos0[pauseCtx->pageIndex];
+                } else {
+                    pauseCtx->eye.x = sKaleidoSetupEyeX1[pauseCtx->pageIndex];
+                    pauseCtx->eye.z = sKaleidoSetupEyeZ1[pauseCtx->pageIndex];
+                    pauseCtx->pageIndex = sKaleidoSetupKscpPos1[pauseCtx->pageIndex];
+                }
+
+                pauseCtx->mode = (u16)(pauseCtx->pageIndex * 2) + 1;
+                pauseCtx->state = 1;
+
+                osSyncPrintf("Ｍｏｄｅ=%d  eye.x=%f,  eye.z=%f  kscp_pos=%d\n", pauseCtx->mode, pauseCtx->eye.x,
+                            pauseCtx->eye.z, pauseCtx->pageIndex);
+            }
         }
 
         if (pauseCtx->state == 1) {

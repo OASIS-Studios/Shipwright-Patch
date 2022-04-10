@@ -37,13 +37,10 @@ void GameOver_Update(GlobalContext* globalCtx) {
                 if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
                     INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
 
-                    // search c buttons for the found spoiling item and revert if necessary
-                    for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-                        if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
-                            gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
-                            Interface_LoadItemIcon1(globalCtx, j);
-                        }
-                    }
+                    Interface_LoadItemIcon1(globalCtx, 1);
+                    Interface_LoadItemIcon1(globalCtx, 2);
+                    Interface_LoadItemIcon1(globalCtx, 3);
+                    Interface_LoadItemIcon1(globalCtx, 4);
                 }
             }
 

@@ -120,11 +120,13 @@ static SavePlayerData sNewSavePlayerData = {
         { ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE }, // buttonItems
         { SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE },            // cButtonSlots
         0,                                              // equipment
+        MENU_PAGE_INDEX,                                // C-Menu
     },                                                  // childEquips
     {
         { ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE }, // buttonItems
         { SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE },            // cButtonSlots
         0,                                              // equipment
+        MENU_PAGE_INDEX,                                // C-Menu
     },                                                  // adultEquips
     0,                                                  // unk_38
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },       // unk_3C
@@ -135,6 +137,7 @@ static ItemEquips sNewSaveEquips = {
     { ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE }, // buttonItems
     { SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE },            // cButtonSlots
     0x1100,                                         // equipment
+    MENU_PAGE_INDEX,                                // C-Menu
 };
 
 static Inventory sNewSaveInventory = {
@@ -142,6 +145,7 @@ static Inventory sNewSaveInventory = {
       0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, // items
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // ammo
     0x1100,                                                                     // equipment
+    MENU_PAGE_INDEX,                                                            // C-Menu
     0,                                                                          // upgrades
     0,                                                                          // questItems
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },             // dungeonItems
@@ -203,11 +207,13 @@ static SavePlayerData sDebugSavePlayerData = {
         { ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE }, // buttonItems
         { SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE },            // cButtonSlots
         0,                                              // equipment
+        MENU_PAGE_INDEX,                                // C-Menu
     },                                                  // childEquips
     {
         { ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE }, // buttonItems
         { SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE },            // cButtonSlots
         0,                                              // equipment
+        MENU_PAGE_INDEX,                                // C-Menu
     },                                                  // adultEquips
     0,                                                  // unk_38
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },       // unk_3C
@@ -218,6 +224,7 @@ static ItemEquips sDebugSaveEquips = {
     { ITEM_SWORD_MASTER, ITEM_BOW, ITEM_BOMB, ITEM_OCARINA_FAIRY, ITEM_BOTTLE }, // buttonItems
     { SLOT_BOW, SLOT_BOMB, SLOT_OCARINA, SLOT_BOTTLE_1 },                          // cButtonSlots
     0x1122,                                                         // equipment
+        MENU_PAGE_INDEX,                                            // C-Menu
 };
 
 static Inventory sDebugSaveInventory = {
@@ -229,6 +236,7 @@ static Inventory sDebugSaveInventory = {
     },                                                              // items
     { 50, 50, 10, 30, 1, 1, 30, 1, 50, 1, 1, 1, 1, 1, 1, 1 },       // ammo
     0x7777,                                                         // equipment
+    MENU_PAGE_INDEX,                                                // C-Menu
     0x125249,                                                       // upgrades
     0x1E3FFFF,                                                      // questItems
     { 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // dungeonItems

@@ -2394,6 +2394,7 @@ void Opening_Init(GameState* thisx);
 void Opening_Destroy(GameState* thisx);
 void FileChoose_Init(GameState* thisx);
 void FileChoose_Destroy(GameState* thisx);
+u8 GetCMenuItem(GlobalContext* globalCtx, u8 button, MenuReturnMode menuReturnMode);
 
 char* SetQuote();
 
