@@ -3469,7 +3469,7 @@ s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage) {
         return 1;
     }
 
-    return Health_ChangeBy(globalCtx, damage);
+    return Health_ChangeBy(globalCtx, damage * 4);
 }
 
 void func_80837B60(Player* this) {
@@ -8114,7 +8114,7 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
                     LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
                         Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
                 }
-                gSaveContext.healthAccumulator = 0x140;
+                gSaveContext.healthAccumulator = 0x10*3;
                 this->unk_850 = -1;
             }
         }
@@ -12660,18 +12660,22 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
                 }
             }
             else {
-                s32 sp28 = D_808549FC[this->itemActionParam - PLAYER_AP_BOTTLE_POTION_RED];
-
-                if (sp28 & 1) {
-                    gSaveContext.healthAccumulator = 0x140;
+                if (this->itemActionParam == PLAYER_AP_BOTTLE_POTION_RED) {
+                    gSaveContext.healthAccumulator = gSaveContext.healthCapacity;
                 }
 
-                if (sp28 & 2) {
+                else if (this->itemActionParam == PLAYER_AP_BOTTLE_POTION_BLUE) {
+                    gSaveContext.healthAccumulator = gSaveContext.healthCapacity / 2;
+                    func_80087708(globalCtx, ((gSaveContext.doubleMagic * 0x30) + 0x30) / 2, 5);
+                }
+
+                else if (this->itemActionParam == PLAYER_AP_BOTTLE_POTION_GREEN) {
                     Magic_Fill(globalCtx);
                 }
 
-                if (sp28 & 4) {
-                    gSaveContext.healthAccumulator = 0x50;
+                else if (this->itemActionParam == PLAYER_AP_BOTTLE_MILK ||
+                    this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF) {
+                    gSaveContext.healthAccumulator = 0x10*6;
                 }
             }
 
@@ -12784,7 +12788,7 @@ void func_8084EED8(Player* this, GlobalContext* globalCtx) {
         func_8002F7DC(&this->actor, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     }
     else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
-        gSaveContext.healthAccumulator = 0x140;
+        gSaveContext.healthAccumulator = 0x10*6;
     }
 }
 

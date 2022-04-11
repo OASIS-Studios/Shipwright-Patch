@@ -628,9 +628,12 @@ void func_80A0329C(EnElf* this, GlobalContext* globalCtx) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                Health_ChangeBy(globalCtx, 128);
                 if (this->fairyFlags & FAIRY_FLAG_BIG) {
                     Magic_Fill(globalCtx);
+                    Health_ChangeBy(globalCtx, gSaveContext.healthCapacity);
+                }
+                else {
+                    Health_ChangeBy(globalCtx, 0x10*6);
                 }
                 this->unk_2B8 = 50.0f;
                 this->unk_2AC = refActor->actor.shape.rot.y;

@@ -1715,7 +1715,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             Magic_Fill(globalCtx);
         }
 
-        func_80087708(globalCtx, 12, 5);
+        func_80087708(globalCtx, ((gSaveContext.doubleMagic * 0x30) + 0x30) / 4, 5);
 
         if (!(gSaveContext.infTable[25] & 0x100)) {
             gSaveContext.infTable[25] |= 0x100;
@@ -1728,7 +1728,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             Magic_Fill(globalCtx);
         }
 
-        func_80087708(globalCtx, 24, 5);
+        func_80087708(globalCtx, ((gSaveContext.doubleMagic * 0x30) + 0x30) / 2, 5);
 
         if (!(gSaveContext.infTable[25] & 0x100)) {
             gSaveContext.infTable[25] |= 0x100;

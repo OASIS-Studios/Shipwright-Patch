@@ -556,7 +556,7 @@ u16 func_80A6F810(GlobalContext* globalCtx, Actor* thisx) {
 s16 func_80A70058(GlobalContext* globalCtx, Actor* thisx) {
     EnHy* this = (EnHy*)thisx;
     s16 beggarItems[] = { ITEM_BLUE_FIRE, ITEM_FISH, ITEM_BUG, ITEM_FAIRY };
-    s16 beggarRewards[] = { 150, 100, 50, 25 };
+    s16 beggarRewards[] = { 20, 10, 5, 15 };
 
     switch (Message_GetState(&globalCtx->msgCtx)) {
         case TEXT_STATE_NONE:
