@@ -633,7 +633,7 @@ void func_80A0329C(EnElf* this, GlobalContext* globalCtx) {
                     Health_ChangeBy(globalCtx, gSaveContext.healthCapacity);
                 }
                 else {
-                    Health_ChangeBy(globalCtx, 0x10*6);
+                    Health_ChangeBy(globalCtx, 0x10*3);
                 }
                 this->unk_2B8 = 50.0f;
                 this->unk_2AC = refActor->actor.shape.rot.y;

@@ -8114,7 +8114,7 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
                     LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
                         Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
                 }
-                gSaveContext.healthAccumulator = 0x10*3;
+                gSaveContext.healthAccumulator = 0x10;
                 this->unk_850 = -1;
             }
         }
@@ -12675,7 +12675,7 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
 
                 else if (this->itemActionParam == PLAYER_AP_BOTTLE_MILK ||
                     this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF) {
-                    gSaveContext.healthAccumulator = 0x10*6;
+                    gSaveContext.healthAccumulator = 0x10*3;
                 }
             }
 
@@ -12788,7 +12788,7 @@ void func_8084EED8(Player* this, GlobalContext* globalCtx) {
         func_8002F7DC(&this->actor, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     }
     else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
-        gSaveContext.healthAccumulator = 0x10*6;
+        gSaveContext.healthAccumulator = 0x10*3;
     }
 }
 
