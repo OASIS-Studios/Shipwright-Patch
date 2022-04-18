@@ -983,7 +983,11 @@ void func_80083108(GlobalContext* globalCtx) {
                 /*
                 if (interfaceCtx->restrictions.tradeItems != 0) {
                     for (i = 1; i < 5; i++) {
-                        if ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                        if ((CVar_GetS32("gMMBunnyHood", 0) != 0)
+                            && (gSaveContext.equips.buttonItems[i] >= ITEM_MASK_KEATON)
+                            && (gSaveContext.equips.buttonItems[i] <= ITEM_MASK_TRUTH)) {
+                            gSaveContext.buttonStatus[i] = BTN_ENABLED;
+                        } else if ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                             (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK)) {
                             if (gSaveContext.buttonStatus[i] == BTN_ENABLED) {
                                 sp28 = 1;
@@ -2643,7 +2647,6 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
                 (msgCtx->msgMode == MSGMODE_NONE) && (globalCtx->gameOverCtx.state == GAMEOVER_INACTIVE) &&
                 (globalCtx->sceneLoadFlag == 0) && (globalCtx->transitionMode == 0) && !Gameplay_InCsMode(globalCtx)) {
                 if ((gSaveContext.magic == 0) || ((func_8008F2F8(globalCtx) >= 2) && (func_8008F2F8(globalCtx) < 5)) ||
-                    ((GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_VALIDATE) != ITEM_LENS)) ||
                     (globalCtx->actorCtx.unk_03 == 0)) {
                     globalCtx->actorCtx.unk_03 = 0;
                     Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &D_801333D4, 4, &D_801333E0, &D_801333E0,

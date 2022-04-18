@@ -24,6 +24,7 @@ struct SoHConfigType {
         bool disable_lod = false;
         bool animated_pause_menu = false;
         bool minimal_ui = false;
+        bool mm_bunny_hood = false;
     } enhancements;
 
     // Controller
@@ -34,6 +35,9 @@ struct SoHConfigType {
         float gyroDriftX = 0.0f;
         float gyroDriftY = 0.0f;
         bool input_enabled = false;
+        bool dpad_pause_name = false;
+        bool dpad_ocarina_text = false;
+        bool dpad_shop = false;
     } controller;
 
     // Cheats
@@ -48,6 +52,11 @@ struct SoHConfigType {
         bool moon_jump_on_l = false;
         bool super_tunic = false;
     } cheats;
+
+    // Graphics
+    struct {
+        bool show = false;
+    } graphics;
 };
 
 enum SeqPlayers {

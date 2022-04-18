@@ -1890,16 +1890,6 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
     s32 item;
     s32 i;
 
-    if (this->currentMask != PLAYER_MASK_NONE) {
-        maskActionParam = this->currentMask - 1 + PLAYER_AP_MASK_KEATON;
-        if (!func_80833C98(GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_VALIDATE), maskActionParam) && !func_80833C98(GetCMenuItem(globalCtx, 2, MENU_RETURN_MODE_VALIDATE), maskActionParam) &&
-            !func_80833C98(GetCMenuItem(globalCtx, 3, MENU_RETURN_MODE_VALIDATE), maskActionParam) && !func_80833C98(GetCMenuItem(globalCtx, 4, MENU_RETURN_MODE_VALIDATE), maskActionParam) &&
-            !func_80833C98(GetCMenuItem(globalCtx, 5, MENU_RETURN_MODE_VALIDATE), maskActionParam) && !func_80833C98(GetCMenuItem(globalCtx, 6, MENU_RETURN_MODE_VALIDATE), maskActionParam) &&
-            !func_80833C98(GetCMenuItem(globalCtx, 7, MENU_RETURN_MODE_VALIDATE), maskActionParam) && !func_80833C98(GetCMenuItem(globalCtx, 8, MENU_RETURN_MODE_VALIDATE), maskActionParam)) {
-            this->currentMask = PLAYER_MASK_NONE;
-        }
-    }
-
     if (!(this->stateFlags1 & (PLAYER_STATE1_11 | PLAYER_STATE1_29)) && !func_8008F128(this)) {
         if (this->itemActionParam >= PLAYER_AP_FISHING_POLE) {
             if (!func_80833C50(this, B_BTN_ITEM) && !func_80833C50(this, GetCMenuItem(globalCtx, 1, MENU_RETURN_MODE_VALIDATE)) &&
@@ -5970,7 +5960,11 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
     s16 yawDiff = this->currentYaw - *arg2;
 
     if (this->swordState == 0) {
-        this->linearVelocity = CLAMP(this->linearVelocity, -(R_RUN_SPEED_LIMIT / 100.0f), (R_RUN_SPEED_LIMIT / 100.0f));
+        float maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
+        if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
+            maxSpeed *= 1.5f;
+        }
+        this->linearVelocity = CLAMP(this->linearVelocity, -maxSpeed, maxSpeed);
     }
 
     if (ABS(yawDiff) > 0x6000) {
@@ -7551,6 +7545,9 @@ void func_80842180(Player* this, GlobalContext* globalCtx) {
         func_80837268(this, &sp2C, &sp2A, 0.018f, globalCtx);
 
         if (!func_8083C484(this, &sp2C, &sp2A)) {
+            if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
+                sp2C *= 1.5f;
+            }
             func_8083DF68(this, sp2C, sp2A);
             func_8083DDC8(this, globalCtx);
 
