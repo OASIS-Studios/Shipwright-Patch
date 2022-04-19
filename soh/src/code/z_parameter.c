@@ -4996,10 +4996,6 @@ u8 GetCMenuItem(GlobalContext* globalCtx, u8 button, MenuReturnMode menuReturnMo
                                 }
                                 return gSaveContext.inventory.items[SLOT_HAMMER];
                             } else {
-                                // hammer requires link to be an adult
-                                if (LINK_AGE_IN_YEARS != YEARS_ADULT) {
-                                    return ITEM_NONE;
-                                }
                                 return gSaveContext.inventory.items[SLOT_HAMMER];
                             }
                         break;
