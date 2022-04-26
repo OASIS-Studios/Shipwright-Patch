@@ -64,16 +64,25 @@ bool func_80098508(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 // Scene Command 0x01: Actor List
 bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     Ship::SetActorList* cmdActor = (Ship::SetActorList*)cmd;
-
-    globalCtx->numSetupActors = cmdActor->entries.size();
-
-    if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
+    
+    // box in jabu mouth
+    if (globalCtx->sceneNum == 2 && globalCtx->roomCtx.curRoom.num == 0) {
         globalCtx->numSetupActors = cmdActor->entries.size() + 1;
-    } else if (globalCtx->sceneNum == SCENE_JYASINZOU && globalCtx->roomCtx.curRoom.num == 22) {
+    }
+    // torches in dodongo firecircle2
+    else if (globalCtx->sceneNum == 1 && globalCtx->roomCtx.curRoom.num == 12) {
+        globalCtx->numSetupActors = cmdActor->entries.size()+2;
+    }
+    else if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
+        globalCtx->numSetupActors = cmdActor->entries.size() + 1;
+    }
+    else if (globalCtx->sceneNum == SCENE_JYASINZOU && globalCtx->roomCtx.curRoom.num == 22) {
         globalCtx->numSetupActors = 1;
-    } else if (globalCtx->sceneNum == SCENE_SPOT13 && globalCtx->roomCtx.curRoom.num == 1) {
+    }
+    else if (globalCtx->sceneNum == SCENE_SPOT13 && globalCtx->roomCtx.curRoom.num == 1) {
         globalCtx->numSetupActors = cmdActor->entries.size() + 2;
-    } else {
+    }
+    else {
         globalCtx->numSetupActors = cmdActor->entries.size();
     }
 
@@ -82,8 +91,13 @@ bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     else
     {
         ActorEntry* entries;
-
-        if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
+        // box in jabu mouth
+        if (globalCtx->sceneNum == 2 && globalCtx->roomCtx.curRoom.num == 0) {
+            entries = (ActorEntry*)malloc((cmdActor->entries.size() + 1) * sizeof(ActorEntry));
+        // torches in dodongo firecircle2
+        } else if (globalCtx->sceneNum == 1 && globalCtx->roomCtx.curRoom.num == 12) {
+            entries = (ActorEntry*)malloc((cmdActor->entries.size() + 2) * sizeof(ActorEntry));
+        } else if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
             entries = (ActorEntry*)malloc((cmdActor->entries.size() + 1) * sizeof(ActorEntry));
         } else if (globalCtx->sceneNum == SCENE_JYASINZOU && globalCtx->roomCtx.curRoom.num == 22) {
             entries = (ActorEntry*)malloc(sizeof(ActorEntry));
@@ -92,13 +106,24 @@ bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
         } else {
             entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
         }
-
+        
         int i;
-
+        
         for (i = 0; i < cmdActor->entries.size(); i++)
         {
+            // torch in dodongo firecircle1
+            if (globalCtx->sceneNum == 1 && globalCtx->roomCtx.curRoom.num == 10 &&
+                cmdActor->entries[i].actorNum == ACTOR_EN_KUSA) {
+                entries[i].id = ACTOR_OBJ_SYOKUDAI;
+                entries[i].pos.x = cmdActor->entries[i].posX;
+                entries[i].pos.y = cmdActor->entries[i].posY;
+                entries[i].pos.z = cmdActor->entries[i].posZ;
+                entries[i].rot.x = cmdActor->entries[i].rotX;
+                entries[i].rot.y = cmdActor->entries[i].rotY;
+                entries[i].rot.z = cmdActor->entries[i].rotZ;
+                entries[i].params = 0x1038;
             // bombchu for bomb bridge in shadow temple
-            if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 13 &&
+            } else if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 13 &&
                  cmdActor->entries[i].actorNum == ACTOR_EN_BOX && cmdActor->entries[i].initVar == 0x588A) {
                 entries[i].id = cmdActor->entries[i].actorNum;
                 entries[i].pos.x = cmdActor->entries[i].posX;
@@ -121,9 +146,38 @@ bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
                 entries[i].params = cmdActor->entries[i].initVar;
             }
         }
-
+        
+        // box in jabu mouth
+        if (globalCtx->sceneNum == 2 && globalCtx->roomCtx.curRoom.num == 0) {
+            entries[i].id = ACTOR_OBJ_KIBAKO;
+            entries[i].pos.x = -4;
+            entries[i].pos.y = -300;
+            entries[i].pos.z = -729;
+            entries[i].rot.x = 0;
+            entries[i].rot.y = 4369;
+            entries[i].rot.z = 0;
+            entries[i].params = 0xFFFF;
+        }
+        else if (globalCtx->sceneNum == 1 && globalCtx->roomCtx.curRoom.num == 12) {
+            entries[i].id = ACTOR_OBJ_SYOKUDAI;
+            entries[i].pos.x = 2705;
+            entries[i].pos.y = 411;
+            entries[i].pos.z = -750;
+            entries[i].rot.x = 0;
+            entries[i].rot.y = 0;
+            entries[i].rot.z = 0;
+            entries[i].params = 0x1039;
+            i++;
+            entries[i].id = ACTOR_OBJ_SYOKUDAI;
+            entries[i].pos.x = 3333;
+            entries[i].pos.y = 475;
+            entries[i].pos.z = -1090;
+            entries[i].rot.x = 0;
+            entries[i].rot.y = 0;
+            entries[i].rot.z = 0;
+            entries[i].params = 0x103A;
         // bomb bridge in shadow temple
-        if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
+        } else if (globalCtx->sceneNum == SCENE_HAKADAN && globalCtx->roomCtx.curRoom.num == 21) {
             entries[i].id = ACTOR_BG_HAKA_ZOU;
             entries[i].pos.x = -2258;
             entries[i].pos.y = -1800;
